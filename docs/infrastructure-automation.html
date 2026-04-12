@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infrastructure &amp; Automation — EspressOrders</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container">
+      <a href="../index.html" class="logo">EspressOrders</a>
+      <a href="../index.html">Overview</a>
+      <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="section-label">Cross-cutting</div>
+      <h1>Infrastructure &amp; Automation</h1>
+      <p class="subtitle">The platform story — decided once at the outset, applied consistently across every service, designed to be portable to any project.</p>
+    </div>
+
+    <div class="section content-body">
+      <h3>The repeatable pattern philosophy</h3>
+      <p>Before building the first microservice, the structure of the platform was decided: how repos would be organised, how CloudFormation stacks would be shaped, how CI/CD pipelines would be wired, how parameters would be managed. Every subsequent service followed this pattern — diverging only when there was a genuine technical reason.</p>
+      <p>This discipline has three compounding benefits:</p>
+      <ul>
+        <li><strong>Reduced cognitive load</strong> — a developer who understands one service-config repo understands all eight</li>
+        <li><strong>Faster delivery</strong> — adding a new service means copying a known pattern, not designing from scratch</li>
+        <li><strong>AI-assisted development</strong> — predictable, consistent structure means AI tools can infer context rather than rediscover it on every session. Consistency is a force multiplier when working with AI</li>
+      </ul>
+
+      <div class="callout">
+        <p>"Decide the pattern once. Every repo follows it. Only diverge when you have a genuine reason."</p>
+      </div>
+
+      <h3>The repo pattern</h3>
+      <p>Every microservice follows a two-repo structure: an application repo (the service code) and a service-config repo (the CloudFormation infrastructure for that service). All eight service-config repos are structurally identical:</p>
+
+      <div class="diagram">
+        <div class="diagram-row">
+          <div class="diagram-box accent-sky">espressorders-[service]</div>
+          <div class="diagram-arrow">+</div>
+          <div class="diagram-box accent-emerald">espressorders-[service]-service-config</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box">Application code<br><small style="color:#9ca3af">dev / prod branches</small></div>
+          <div class="diagram-arrow">&nbsp;</div>
+          <div class="diagram-box">CloudFormation stack<br><small style="color:#9ca3af">ECS service · TG · listener rule</small></div>
+        </div>
+      </div>
+
+      <p>Both repos use the same branch model: <code>dev</code> for active development, <code>prod</code> for stable releases. The same CodeBuild pipeline pattern triggers on push to each branch.</p>
+
+      <h3>Shared infrastructure</h3>
+      <p>Beneath the service layer, shared infrastructure is managed in dedicated repos — also following consistent patterns:</p>
+      <ul>
+        <li><strong>ecs-infrastructure</strong> — ECS cluster, Application Load Balancer, Route 53 A record. Deployed once; all services attach to it</li>
+        <li><strong>vpc-infrastructure</strong> — VPC, subnets, security groups. The network foundation everything runs on</li>
+        <li><strong>task-definition</strong> — ECS task definitions for all services. The primary pipeline trigger: push here to kick off a rolling deployment</li>
+        <li><strong>parameters</strong> — All SSM parameters managed as infrastructure-as-code. No ad-hoc CLI parameter creation; every secret and config value is tracked in this repo</li>
+        <li><strong>buildspecs</strong> — Centralised CodeBuild YAML for all services. Synced to S3 on push to <code>dev</code>; CodeBuild reads from S3 at build time</li>
+        <li><strong>deployment-cli</strong> — CloudFormation templates for CodeBuild projects and ECR repository policies. The tooling that creates the pipelines</li>
+      </ul>
+
+      <h3>CI/CD pipeline pattern</h3>
+      <p>Every service uses the same pipeline pattern: a CodeBuild project with a GitHub webhook trigger, parameterised by branch, deployed via CloudFormation from <code>deployment-cli</code>. The buildspec lives in the centralised <code>buildspecs</code> repo rather than the application repo — a single place to update build configuration across the entire platform.</p>
+
+      <div class="diagram">
+        <div class="diagram-row">
+          <div class="diagram-box">Push to GitHub</div>
+          <div class="diagram-arrow">→ webhook</div>
+          <div class="diagram-box">CodeBuild</div>
+          <div class="diagram-arrow">→ reads from S3</div>
+          <div class="diagram-box accent-emerald">Buildspec YAML</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box">CodeBuild</div>
+          <div class="diagram-arrow">→ image push</div>
+          <div class="diagram-box">ECR</div>
+          <div class="diagram-arrow">→ rolling deploy</div>
+          <div class="diagram-box">ECS service</div>
+        </div>
+      </div>
+
+      <h3>One-command environment management</h3>
+      <p>Running nine ECS services continuously is expensive. For a portfolio project, the environment needs to be spun up for demonstrations and shut down afterwards. The <code>espressorders-spinup-automation</code> repo provides this: a Step Function that orchestrates the spin-up or spin-down of the entire environment in strict dependency order, triggered by a single CLI command.</p>
+
+      <div class="callout">
+        <p>This is the same pattern a platform engineering team would put behind a "Start Environment" button in an internal developer portal — complex orchestration abstracted to a single, repeatable action.</p>
+      </div>
+
+      <p>The dependency order matters: the ECS cluster must exist before services can attach to it; the ALB must exist before listener rules can be created; Aurora must be running before services that depend on it start. The Step Function enforces this order automatically, eliminating the manual coordination that would otherwise be required.</p>
+
+      <h3>Why this matters for production</h3>
+      <p>The patterns here are not academic. The two-repo structure, centralised buildspecs, infrastructure-as-code parameters, and automated environment orchestration are all patterns that translate directly to enterprise platform engineering:</p>
+      <ul>
+        <li>A new team service can be onboarded in hours by copying the existing pattern</li>
+        <li>Environment promotion (dev → prod) is a single parameter change, not a process document</li>
+        <li>The platform is auditable — every parameter, every pipeline, every infrastructure change is tracked in version control</li>
+        <li>It can be torn down and rebuilt from scratch — which means it can be ported to another project or organisation</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

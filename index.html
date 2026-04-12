@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EspressOrders — Engineering Portfolio</title>
+  <meta name="description" content="A production-style coffee ordering platform built to demonstrate full-stack cloud and DevOps engineering — from Django monolith to containerised microservices to mobile app.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container">
+      <span class="logo">EspressOrders</span>
+      <a href="index.html">Overview</a>
+      <a href="docs/infrastructure-automation.html">Infrastructure &amp; Automation</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>EspressOrders</h1>
+      <p class="subtitle">A production-style coffee ordering platform — built to demonstrate cloud engineering, microservices architecture, and DevOps automation.</p>
+    </div>
+
+    <!-- Honest framing -->
+    <div class="section">
+      <div class="section-label">Context</div>
+      <p>The monolith started life as a project for a separate certification. Rather than build a clean demo from scratch, I chose to work with this existing, imperfect codebase — the same decision a DevOps or cloud engineer faces on day one at any real company.</p>
+      <p>The goal was to practise and improve automation, infrastructure, and cloud skills on something real, messy, and at times resistant to the work. Every constraint the codebase imposed made the decisions more interesting and the solutions more representative of real engineering.</p>
+      <div class="callout">
+        <p>"I could have used a demo project. I chose not to — because the interesting problems only appear when the codebase isn't designed for you."</p>
+      </div>
+    </div>
+
+    <!-- Interactive timeline -->
+    <div id="timeline" class="section"></div>
+
+    <!-- Key decisions -->
+    <div class="section">
+      <div class="section-label">Key Decisions</div>
+      <h2>Senior thinking, not just senior building</h2>
+      <p>Every major architectural choice is documented as an Architecture Decision Record — the reasoning, the alternatives considered, and the trade-offs accepted.</p>
+      <div class="decisions-strip">
+        <div class="decision-card">
+          <div class="decision-label">Decomposition</div>
+          <h4>Strangler Fig over big-bang rewrite</h4>
+          <p>Incremental extraction with the monolith running in parallel — zero downtime, reversible at every step.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">CI/CD</div>
+          <h4>CodeBuild over CodePipeline</h4>
+          <p>Consistent with the existing ecosystem, $2/month cheaper, no functional gap for this use case.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">Mobile</div>
+          <h4>Expo preview profile over App Store</h4>
+          <p>iOS simulator build via EAS — no Apple Developer account required, full CI/CD pipeline demonstrated.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Infrastructure band -->
+  <div class="infra-band">
+    <div class="container">
+      <h2>Built on a repeatable platform</h2>
+      <p>Every service follows the same repo structure, the same CloudFormation pattern, the same CI/CD approach. The entire environment spins up or down with a single command — the same pattern a platform team would put behind a button in an internal developer portal.</p>
+      <a href="docs/infrastructure-automation.html">Explore the platform →</a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+    </div>
+  </footer>
+
+  <script src="js/timeline.js"></script>
+</body>
+</html>

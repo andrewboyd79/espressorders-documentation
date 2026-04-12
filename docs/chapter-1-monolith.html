@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 1: The Monolith — EspressOrders</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container">
+      <a href="../index.html" class="logo">EspressOrders</a>
+      <a href="../index.html">Overview</a>
+      <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="section-label">Chapter 1</div>
+      <h1>The Monolith</h1>
+      <p class="subtitle">A Django application that was never meant to become a microservices platform — until it did.</p>
+      <div class="tech-tags">
+        <span class="tag">Django</span>
+        <span class="tag">Aurora PostgreSQL</span>
+        <span class="tag">S3</span>
+        <span class="tag">AWS ECS</span>
+        <span class="tag">ALB</span>
+      </div>
+    </div>
+
+    <div class="section content-body">
+      <h3>The problem</h3>
+      <p>EspressOrders began as a project for a separate certification — a standard Django application with a PostgreSQL database, S3 for static and media assets, and a session-based authentication system. It was functional, reasonably structured, and entirely typical of a monolithic web application.</p>
+      <p>It was also not designed to be decomposed. The codebase had the normal accumulation of assumptions that any real project develops: tightly coupled views and models, session-based auth that would not translate easily to stateless microservices, and no API layer because none was needed at the time.</p>
+      <p>Rather than start from a clean demo project, I chose to work with this existing codebase. That constraint was the point — real DevOps and cloud engineering work happens on imperfect codebases, not greenfield ones.</p>
+
+      <h3>What was built in this chapter</h3>
+      <p>The monolith was containerised and deployed to AWS ECS behind an Application Load Balancer, with Aurora PostgreSQL as the database and S3 for static file serving. The infrastructure was defined in CloudFormation, following the same repeatable pattern used by every subsequent service.</p>
+
+      <div class="diagram">
+        <div class="diagram-row">
+          <div class="diagram-box">Browser</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box">Route 53</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box">ALB</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box accent-indigo">ECS · Django</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box accent-indigo">Django</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box">Aurora PostgreSQL</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box accent-indigo">Django</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box">S3 (static/media)</div>
+        </div>
+      </div>
+
+      <h3>The constraint that shaped everything</h3>
+      <p>Django's session-based authentication stores session tokens in a cookie. Mobile clients and other services cannot easily consume cookie-based auth. This constraint — inherited from the original codebase — drove the later decision to build a dedicated JWT identity service rather than modify the monolith's auth system.</p>
+      <p>That is what makes this chapter interesting from an engineering perspective: the monolith was not cleaned up or idealised. It was deployed as-is, and every constraint it introduced was addressed downstream through deliberate architectural decisions.</p>
+
+      <h3>Key trade-offs</h3>
+      <ul>
+        <li>The monolith continued running throughout the decomposition — the Strangler Fig pattern required it</li>
+        <li>Session-based auth was left in place rather than rewritten — a deliberate deferral, not an oversight</li>
+        <li>No API layer was added at this stage — that came with <a href="chapter-2-4-decomposition.html">espressorders-ms in Chapter 2</a></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <a href="chapter-2-4-decomposition.html" class="adr-link">Next: Decomposition →</a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapters 2–4: Decomposition — EspressOrders</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container">
+      <a href="../index.html" class="logo">EspressOrders</a>
+      <a href="../index.html">Overview</a>
+      <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="section-label">Chapters 2–4</div>
+      <h1>Decomposition</h1>
+      <p class="subtitle">Extracting four microservices from a running monolith — without taking the system down.</p>
+      <div class="tech-tags">
+        <span class="tag">FastAPI</span>
+        <span class="tag">Strangler Fig</span>
+        <span class="tag">AWS ECS</span>
+        <span class="tag">DynamoDB</span>
+        <span class="tag">SNS / SQS</span>
+        <span class="tag">Stripe</span>
+        <span class="tag">Aurora PostgreSQL</span>
+      </div>
+    </div>
+
+    <div class="section content-body">
+      <h3>The problem</h3>
+      <p>A monolith that does everything is easy to deploy and hard to scale. As EspressOrders grew, the coupling between catalogue browsing, cart management, order processing, and notifications made independent deployment impossible — a change to the order flow required redeploying the entire application.</p>
+      <p>The question was not whether to decompose, but how. A big-bang rewrite would mean months of parallel development with no user-facing changes and high risk of regression. There had to be a better way.</p>
+
+      <h3>The decision: Strangler Fig</h3>
+      <p>The Strangler Fig pattern extracts functionality incrementally behind a facade — the original monolith keeps running, the facade routes traffic to whichever implementation (monolith or new service) is ready. At no point is the system unavailable, and at every step the change is reversible.</p>
+      <p><code>espressorders-ms</code> became that facade — a clone of the original Django app, progressively rewritten to consume microservice APIs instead of the monolith's internal services. The monolith itself was not modified.</p>
+
+      <div class="diagram">
+        <div class="diagram-row">
+          <div class="diagram-box">ALB</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box accent-sky">espressorders-ms (facade)</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box accent-sky">Facade</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box">Catalogue service</div>
+          <div class="diagram-arrow">&nbsp;</div>
+          <div class="diagram-box">Aurora PostgreSQL</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box accent-sky">Facade</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box">Cart service</div>
+          <div class="diagram-arrow">&nbsp;</div>
+          <div class="diagram-box">DynamoDB</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box accent-sky">Facade</div>
+          <div class="diagram-arrow">→</div>
+          <div class="diagram-box">Order service</div>
+          <div class="diagram-arrow">&nbsp;</div>
+          <div class="diagram-box">SNS → SQS</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box">&nbsp;</div>
+          <div class="diagram-arrow">&nbsp;</div>
+          <div class="diagram-box">Notification service</div>
+          <div class="diagram-arrow">&nbsp;</div>
+          <div class="diagram-box">SES (email)</div>
+        </div>
+      </div>
+
+      <h3>The services extracted</h3>
+      <ul>
+        <li><strong>Catalogue</strong> — read-only FastAPI service, Aurora-backed, consumed by the facade for menu browsing</li>
+        <li><strong>Cart</strong> — FastAPI service with DynamoDB for session-scoped cart state; stateless, horizontally scalable</li>
+        <li><strong>Order</strong> — FastAPI service handling Stripe payment processing and order creation; publishes to SNS on completion</li>
+        <li><strong>Notification</strong> — FastAPI service consuming from SQS, sending order confirmation emails via SES</li>
+      </ul>
+
+      <h3>The Saga pattern</h3>
+      <p>Order processing spans multiple services: payment (Stripe), order creation, and notification. A distributed transaction that fails halfway must be recoverable. The Saga pattern — implemented via SNS/SQS — ensures each step either completes or publishes a compensating event. The Order service publishes to SNS on success; the Notification service consumes from SQS asynchronously. No two-phase commit, no tight coupling.</p>
+
+      <h3>Key trade-offs</h3>
+      <ul>
+        <li>The monolith remained deployed throughout — operational overhead, but zero migration risk</li>
+        <li>DynamoDB for cart state was chosen over Aurora for horizontal scalability and session-scoped access patterns</li>
+        <li>Asynchronous notification via SNS/SQS means emails may arrive seconds after order confirmation — acceptable for this use case</li>
+      </ul>
+
+      <div id="decision-record" class="callout">
+        <p>The full decomposition decision — options considered, criteria applied, and trade-offs accepted — is documented in ADR-001 in the private repository.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <a href="chapter-5-7-maturity.html" class="adr-link">Next: Operational Maturity →</a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

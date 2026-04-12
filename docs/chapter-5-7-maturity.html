@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapters 5–7: Operational Maturity — EspressOrders</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container">
+      <a href="../index.html" class="logo">EspressOrders</a>
+      <a href="../index.html">Overview</a>
+      <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="section-label">Chapters 5–7</div>
+      <h1>Operational Maturity</h1>
+      <p class="subtitle">From a working system to a production-ready one — observability, identity, and automation.</p>
+      <div class="tech-tags">
+        <span class="tag">FastAPI</span>
+        <span class="tag">RS256 JWT</span>
+        <span class="tag">Server-Sent Events</span>
+        <span class="tag">AWS CodeBuild</span>
+        <span class="tag">CloudFormation</span>
+        <span class="tag">pytest</span>
+      </div>
+    </div>
+
+    <div class="section content-body">
+      <h3>The problem</h3>
+      <p>A distributed system that works is not the same as a distributed system that is operable. After decomposition, EspressOrders had five independently deployed services with no shared visibility into order state, no standardised authentication across services, and no automated pipeline to validate that changes to one service did not break others.</p>
+      <p>These chapters addressed operational maturity: the work that turns a proof of concept into something you could hand to an on-call engineer at 3am.</p>
+
+      <h3>Operations console</h3>
+      <p>The operations console is a FastAPI service providing a real-time order queue for staff — orders appear as they are placed, without polling. This is implemented using Server-Sent Events (SSE): a persistent HTTP connection over which the server pushes updates to the client. Simpler than WebSockets for unidirectional data, and sufficient for this use case.</p>
+      <p>Access is protected by staff authentication — a separate concern from customer identity, handled within the operations service itself.</p>
+
+      <h3>Identity service</h3>
+      <p>The mobile client (Chapter 9) required stateless authentication — JWT tokens rather than session cookies. Rather than modify the monolith's auth system, a dedicated identity service was built: a FastAPI service issuing RS256-signed JWTs, with public key verification available to any consuming service.</p>
+      <p>RS256 (asymmetric signing) was chosen over HS256 (symmetric) so that services can verify tokens without access to the signing key. Any service can verify; only the identity service can issue.</p>
+
+      <div class="diagram">
+        <div class="diagram-row">
+          <div class="diagram-box">Client</div>
+          <div class="diagram-arrow">→ POST /token</div>
+          <div class="diagram-box accent-emerald">Identity service</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box accent-emerald">Identity service</div>
+          <div class="diagram-arrow">→ RS256 JWT</div>
+          <div class="diagram-box">Client</div>
+        </div>
+        <div class="diagram-row">
+          <div class="diagram-box">Client</div>
+          <div class="diagram-arrow">→ Bearer token</div>
+          <div class="diagram-box">Any service</div>
+        </div>
+      </div>
+
+      <h3>CI/CD pipeline</h3>
+      <p>Each service has its own CodeBuild project, triggered by a push to the relevant GitHub branch. Buildspecs are centralised in a dedicated repository and synced to S3 — a single source of truth for build configuration across all services. The same pipeline pattern is used for every service, including the mobile app added in Chapter 9.</p>
+
+      <h3>Integration tests</h3>
+      <p>A dedicated integration test suite exercises the full system end-to-end — placing orders, verifying state across services, confirming notifications. These run against a deployed environment (not mocked), providing confidence that the service boundaries behave correctly under real network conditions.</p>
+
+      <h3>Key trade-offs</h3>
+      <ul>
+        <li>SSE over WebSockets for the operations console — simpler protocol, sufficient for unidirectional updates</li>
+        <li>RS256 over HS256 for JWT signing — slightly more complex to set up, but the right choice for a multi-service architecture</li>
+        <li>Centralised buildspecs over per-repo buildspecs — one place to update pipeline configuration, at the cost of an S3 sync step on change</li>
+      </ul>
+
+      <div id="decision-record" class="callout">
+        <p>The operational maturity decisions — including the CodeBuild vs CodePipeline evaluation — are documented in ADR-002 in the private repository.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <a href="chapter-9-mobile.html" class="adr-link">Next: Mobile →</a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

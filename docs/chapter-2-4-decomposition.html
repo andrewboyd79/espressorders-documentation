@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 2: Decomposition — EspressOrders</title>
+  <title>Chapter 2: Platform Evolution — Engineering Leadership Case Study</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
   <nav class="site-nav">
     <div class="container">
-      <a href="../index.html" class="logo">EspressOrders</a>
+      <a href="../index.html" class="logo">Andrew Boyd</a>
       <a href="../index.html">Overview</a>
       <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
     </div>
@@ -18,28 +18,28 @@
 
   <div class="container">
     <div class="page-header">
-      <div class="section-label">Chapter 2</div>
-      <h1>Decomposition</h1>
-      <p class="subtitle">Extracting four microservices from a running monolith — without taking the system down.</p>
+      <div class="section-label">Case Study 2</div>
+      <h1>Platform Evolution Through Strategic Decomposition</h1>
+      <p class="subtitle">How incremental platform improvements enable scaling without disruption.</p>
       <div class="tech-tags">
-        <span class="tag">FastAPI</span>
-        <span class="tag">Strangler Fig</span>
-        <span class="tag">AWS ECS</span>
-        <span class="tag">DynamoDB</span>
-        <span class="tag">SNS / SQS</span>
-        <span class="tag">Stripe</span>
-        <span class="tag">Aurora PostgreSQL</span>
+        <span class="tag">Platform Evolution</span>
+        <span class="tag">Strangler Fig Pattern</span>
+        <span class="tag">Microservices</span>
+        <span class="tag">Event-Driven Architecture</span>
+        <span class="tag">Infrastructure as Code</span>
+        <span class="tag">Observability</span>
+        <span class="tag">Platform Engineering</span>
       </div>
     </div>
 
     <div class="section content-body">
-      <h3>The problem</h3>
-      <p>A monolith that does everything is easy to deploy and hard to scale. As EspressOrders grew, the coupling between catalogue browsing, cart management, order processing, and notifications made independent deployment impossible — a change to the order flow required redeploying the entire application.</p>
-      <p>The question was not whether to decompose, but how. A big-bang rewrite would mean months of parallel development with no user-facing changes and high risk of regression. There had to be a better way.</p>
+      <h3>The Scaling Challenge</h3>
+      <p>As systems grow, the tension between deployment simplicity and operational scalability becomes a critical platform engineering concern. This case study examines how the Strangler Fig pattern enabled evolutionary platform improvement without disrupting ongoing operations — a key capability for platform teams managing live systems.</p>
+      <p>The challenge wasn't technical decomposition itself, but doing so while maintaining service continuity, team velocity, and business value delivery. Platform thinking reframes this as an evolutionary improvement challenge rather than a revolutionary rewrite.</p>
 
-      <h3>The decision: Strangler Fig</h3>
-      <p>The Strangler Fig pattern extracts functionality incrementally behind a facade — the original monolith keeps running, the facade routes traffic to whichever implementation (monolith or new service) is ready. At no point is the system unavailable, and at every step the change is reversible.</p>
-      <p><code>espressorders-ms</code> became that facade — a clone of the original Django app, progressively rewritten to consume microservice APIs instead of the monolith's internal services. The monolith itself was not modified.</p>
+      <h3>Platform Strategy: Strangler Fig Pattern</h3>
+      <p>The Strangler Fig pattern represents a platform engineering approach to system evolution: delivering incremental value while maintaining system stability and enabling safe experimentation. Rather than viewing it as a technical tactic, it's a philosophy of platform improvement that respects existing investments while enabling future capability.</p>
+      <p><code>espressorders-ms</code> served as an evolutionary platform layer — progressively enabling new capabilities while preserving existing functionality. This approach aligns with platform principles of making change safe, reversible, and value-delivering at every step.</p>
 
       <div class="diagram">
         <div class="diagram-row">
@@ -50,43 +50,44 @@
         <div class="diagram-row">
           <div class="diagram-box accent-sky">Facade</div>
           <div class="diagram-arrow">→</div>
-          <div class="diagram-box">Catalogue service</div>
+          <div class="diagram-box">Catalogue Service</div>
           <div class="diagram-arrow">&nbsp;</div>
-          <div class="diagram-box">Aurora PostgreSQL</div>
+          <div class="diagram-box">Data Store</div>
         </div>
         <div class="diagram-row">
           <div class="diagram-box accent-sky">Facade</div>
           <div class="diagram-arrow">→</div>
-          <div class="diagram-box">Cart service</div>
+          <div class="diagram-box">Processing Service</div>
           <div class="diagram-arrow">&nbsp;</div>
-          <div class="diagram-box">DynamoDB</div>
+          <div class="diagram-box">State Store</div>
         </div>
         <div class="diagram-row">
           <div class="diagram-box accent-sky">Facade</div>
           <div class="diagram-arrow">→</div>
-          <div class="diagram-box">Order service</div>
+          <div class="diagram-box">Transaction Service</div>
           <div class="diagram-arrow">&nbsp;</div>
-          <div class="diagram-box">SNS → SQS</div>
+          <div class="diagram-box">Event Stream</div>
         </div>
         <div class="diagram-row">
           <div class="diagram-box">&nbsp;</div>
           <div class="diagram-arrow">&nbsp;</div>
-          <div class="diagram-box">Notification service</div>
+          <div class="diagram-box">Delivery Service</div>
           <div class="diagram-arrow">&nbsp;</div>
-          <div class="diagram-box">SES (email)</div>
+          <div class="diagram-box">Notification Channel</div>
         </div>
       </div>
 
-      <h3>The services extracted</h3>
+      <h3>Platform Services Identified</h3>
       <ul>
-        <li><strong>Catalogue</strong> — read-only FastAPI service, Aurora-backed, consumed by the facade for menu browsing</li>
-        <li><strong>Cart</strong> — FastAPI service with DynamoDB for session-scoped cart state; stateless, horizontally scalable</li>
-        <li><strong>Order</strong> — FastAPI service handling Stripe payment processing and order creation; publishes to SNS on completion</li>
-        <li><strong>Notification</strong> — FastAPI service consuming from SQS, sending order confirmation emails via SES</li>
+        <li><strong>Read Services</strong> — FastAPI services for catalog data, backed by scalable storage, consumed through the evolutionary facade</li>
+        <li><strong>State Services</strong> — FastAPI services managing session state with appropriate storage choices for access patterns and scale requirements</li>
+        <li><strong>Transaction Services</strong> — FastAPI services handling business processes and external integrations, emitting events for downstream processing</li>
+        <li><strong>Delivery Services</strong> — FastAPI services consuming event streams to perform side effects like notifications and communications</li>
       </ul>
 
-      <h3>The Saga pattern</h3>
-      <p>Order processing spans multiple services: payment (Stripe), order creation, and notification. A distributed transaction that fails halfway must be recoverable. The Saga pattern — implemented via SNS/SQS — ensures each step either completes or publishes a compensating event. The Order service publishes to SNS on success; the Notification service consumes from SQS asynchronously. No two-phase commit, no tight coupling.</p>
+      <h3>Platform Patterns: Event-Driven Reliability</h3>
+      <p>Business processes that span multiple services require reliable coordination patterns. The Saga pattern — implemented via event streaming (SNS/SQS) — provides a platform-native approach to distributed transactions that maintains loose coupling while ensuring recoverability. Each service publishes events on success; interested services consume and act asynchronously, with compensating actions triggered by failure events.</p>
+      <p>This represents a platform principle: using infrastructure services (event queues, streams) to enable reliable, observable business processes without tight coupling or distributed locks.</p>
 
       <h3>Key trade-offs</h3>
       <ul>

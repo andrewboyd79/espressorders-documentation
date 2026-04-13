@@ -7,15 +7,15 @@ const STAGES = [
     colour: '#6366f1',
     tech: ['Django', 'Aurora PostgreSQL', 'S3', 'ECS'],
     tagline: '"Built to be broken apart"',
-    summary: 'A Django monolith originally built for a certification project — containerised and deployed to AWS ECS. Deliberately imperfect, deliberately real. The starting point for everything that followed.',
+    summary: 'A Django monolith originally built as a Code Institute Diploma project — containerised and deployed to AWS ECS. Deliberately imperfect, deliberately real. The starting point for everything that followed.',
     docLink: 'docs/chapter-1-monolith.html',
     adrLink: null
   },
   {
     id: 'decomposition',
-    number: '2–4',
+    number: '2',
     label: 'Decomposition',
-    chapter: 'Chapters 2–4',
+    chapter: 'Chapter 2',
     colour: '#0ea5e9',
     tech: ['FastAPI', 'ECS', 'DynamoDB', 'SNS/SQS', 'Stripe'],
     tagline: '"Why, not just how"',
@@ -25,9 +25,9 @@ const STAGES = [
   },
   {
     id: 'maturity',
-    number: '5–7',
+    number: '3',
     label: 'Maturity',
-    chapter: 'Chapters 5–7',
+    chapter: 'Chapter 3',
     colour: '#10b981',
     tech: ['FastAPI', 'RS256 JWT', 'SSE', 'CodeBuild', 'CloudFormation'],
     tagline: '"Production-ready thinking"',
@@ -37,9 +37,9 @@ const STAGES = [
   },
   {
     id: 'mobile',
-    number: '9',
+    number: '4',
     label: 'Mobile',
-    chapter: 'Chapter 9',
+    chapter: 'Chapter 4',
     colour: '#f59e0b',
     tech: ['React Native', 'Expo', 'EAS Build', 'CodeBuild', 'Stripe SDK'],
     tagline: '"API-first pays off"',
@@ -96,6 +96,14 @@ function buildTimeline() {
   const cardContainer = document.createElement('div');
   cardContainer.id = 'stage-card-container';
   container.appendChild(cardContainer);
+
+  const hint = document.createElement('p');
+  hint.className = 'timeline-hint';
+  hint.textContent = 'Click any stage to explore';
+  container.appendChild(hint);
+
+  // Auto-expand first stage so the interaction is immediately obvious
+  toggleStage(STAGES[0].id);
 }
 
 function toggleStage(id) {

@@ -48,8 +48,9 @@ const STAGES = [
 let activeStage = null;
 
 function buildTimeline() {
-  const container = document.getElementById('timeline');
-  if (!container) return;
+  const section = document.getElementById('timeline');
+  if (!section) return;
+  const container = section.querySelector('.container') || section;
 
   const label = document.createElement('div');
   label.className = 'eyebrow';

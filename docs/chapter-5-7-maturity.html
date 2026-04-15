@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 5: Platform Maturity — Engineering Leadership Case Study</title>
+  <title>Chapter 3: Maturity — Andrew Boyd</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -11,36 +11,65 @@
   <nav class="site-nav">
     <div class="container">
       <a href="../index.html" class="logo">Andrew Boyd</a>
-      <a href="../index.html">Overview</a>
-      <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">Overview</a>
+        <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
+      </div>
+      <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
     </div>
   </nav>
 
-  <div class="container">
-    <div class="page-header">
-      <div class="section-label">Case Study 5</div>
-      <h1>Platform Observability and Reliability Engineering</h1>
-      <p class="subtitle">Building operable platforms that teams can trust and operate confidently.</p>
-      <div class="tech-tags">
-        <span class="tag">FastAPI</span>
-        <span class="tag">RS256 JWT</span>
-        <span class="tag">Server-Sent Events</span>
-        <span class="tag">AWS CodeBuild</span>
-        <span class="tag">CloudFormation</span>
-        <span class="tag">pytest</span>
-      </div>
-    </div>
+  <!-- Chapter tab strip -->
+  <nav class="chapter-nav">
+    <a href="chapter-1-monolith.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-1">1</span> Monolith
+    </a>
+    <a href="chapter-2-4-decomposition.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-2">2</span> Decomposition
+    </a>
+    <a href="chapter-5-7-maturity.html" class="chapter-tab active">
+      <span class="mini-dot mini-dot-3">3</span> Maturity
+    </a>
+    <a href="chapter-9-mobile.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-4">4</span> Mobile
+    </a>
+    <a href="infrastructure-automation.html" class="chapter-tab chapter-tab-infra">
+      <span class="mini-dot mini-dot-infra">⚙</span> Infrastructure
+    </a>
+  </nav>
 
-    <div class="section content-body">
-      <h3>The problem</h3>
+  <div class="page-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-label">On this page</div>
+      <a href="#problem" class="sidebar-link active">The problem</a>
+      <a href="#operations-console" class="sidebar-link">Operations console</a>
+      <a href="#identity-service" class="sidebar-link">Identity service</a>
+      <a href="#cicd" class="sidebar-link">CI/CD pipeline</a>
+      <a href="#integration-tests" class="sidebar-link">Integration tests</a>
+      <a href="#trade-offs" class="sidebar-link">Key trade-offs</a>
+      <a href="#decision-record" class="sidebar-link">Decision record</a>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+
+      <div class="chapter-header">
+        <div class="eyebrow">Chapter 3 · Maturity</div>
+        <h1>Platform Observability and Reliability Engineering</h1>
+        <p>Building operable platforms that teams can trust and operate confidently.</p>
+      </div>
+
+      <h3 id="problem">The problem</h3>
       <p>A distributed system that works is not the same as a distributed system that is operable. After decomposition, EspressOrders had five independently deployed services with no shared visibility into order state, no standardised authentication across services, and no automated pipeline to validate that changes to one service did not break others.</p>
       <p>These chapters addressed operational maturity: the work that turns a proof of concept into something you could hand to an on-call engineer at 3am.</p>
 
-      <h3>Operations console</h3>
+      <h3 id="operations-console">Operations console</h3>
       <p>The operations console is a FastAPI service providing a real-time order queue for staff — orders appear as they are placed, without polling. This is implemented using Server-Sent Events (SSE): a persistent HTTP connection over which the server pushes updates to the client. Simpler than WebSockets for unidirectional data, and sufficient for this use case.</p>
       <p>Access is protected by staff authentication — a separate concern from customer identity, handled within the operations service itself.</p>
 
-      <h3>Identity service</h3>
+      <h3 id="identity-service">Identity service</h3>
       <p>The mobile client (Chapter 4) required stateless authentication — JWT tokens rather than session cookies. Rather than modify the monolith's auth system, a dedicated identity service was built: a FastAPI service issuing RS256-signed JWTs, with public key verification available to any consuming service.</p>
       <p>RS256 (asymmetric signing) was chosen over HS256 (symmetric) so that services can verify tokens without access to the signing key. Any service can verify; only the identity service can issue.</p>
 
@@ -48,10 +77,10 @@
         <div class="diagram-row">
           <div class="diagram-box">Client</div>
           <div class="diagram-arrow">→ POST /token</div>
-          <div class="diagram-box accent-emerald">Identity service</div>
+          <div class="diagram-box primary">Identity service</div>
         </div>
         <div class="diagram-row">
-          <div class="diagram-box accent-emerald">Identity service</div>
+          <div class="diagram-box primary">Identity service</div>
           <div class="diagram-arrow">→ RS256 JWT</div>
           <div class="diagram-box">Client</div>
         </div>
@@ -62,32 +91,58 @@
         </div>
       </div>
 
-      <h3>CI/CD pipeline</h3>
+      <h3 id="cicd">CI/CD pipeline</h3>
       <p>Each service has its own CodeBuild project, triggered by a push to the relevant GitHub branch. Buildspecs are centralised in a dedicated repository and synced to S3 — a single source of truth for build configuration across all services. The same pipeline pattern is used for every service, including the mobile app added in Chapter 4.</p>
 
-      <h3>Integration tests</h3>
+      <h3 id="integration-tests">Integration tests</h3>
       <p>A dedicated integration test suite exercises the full system end-to-end — placing orders, verifying state across services, confirming notifications. These run against a deployed environment (not mocked), providing confidence that the service boundaries behave correctly under real network conditions.</p>
 
-      <h3>Key trade-offs</h3>
+      <h3 id="trade-offs">Key trade-offs</h3>
       <ul>
         <li>SSE over WebSockets for the operations console — simpler protocol, sufficient for unidirectional updates</li>
         <li>RS256 over HS256 for JWT signing — slightly more complex to set up, but the right choice for a multi-service architecture</li>
         <li>Centralised buildspecs over per-repo buildspecs — one place to update pipeline configuration, at the cost of an S3 sync step on change</li>
       </ul>
 
-      <div id="decision-record" class="callout">
-        <p>The operational maturity decisions — including the CodeBuild vs CodePipeline evaluation — are recorded in the project's architecture decision records.</p>
+      <!-- ADR component -->
+      <div id="decision-record" class="adr">
+        <div class="adr-header">
+          <span class="adr-label">Architectural Decision Record · ADR-003</span>
+          <span class="adr-badge">Accepted</span>
+        </div>
+        <div class="adr-body">
+          <h4>Use RS256 asymmetric signing for JWT identity service</h4>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Context</div>
+              <p>Multiple services need to verify JWT tokens issued by the identity service. HS256 requires sharing the signing secret with every verifying service, creating a key-distribution problem.</p>
+            </div>
+            <div class="adr-section">
+              <div class="adr-section-label">Decision</div>
+              <p>Use RS256 (RSA asymmetric signing). The identity service holds the private key and signs tokens. All other services use the public key to verify — no secret sharing required.</p>
+            </div>
+          </div>
+          <div class="adr-grid" style="margin-top: 12px;">
+            <div class="adr-section">
+              <div class="adr-section-label">Consequences</div>
+              <p>Any service can verify tokens independently. Slightly more complex key management. Tokens cannot be forged by a compromised consuming service. Clear separation between issuance and verification.</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="section">
-      <a href="chapter-9-mobile.html" class="adr-link">Next: Mobile →</a>
-    </div>
+    </main>
+  </div>
+
+  <!-- Bottom chapter navigation -->
+  <div class="chapter-nav-bottom">
+    <a href="chapter-2-4-decomposition.html" class="btn-ghost">← Chapter 2: Decomposition</a>
+    <a href="chapter-9-mobile.html" class="btn-black">Chapter 4: Mobile →</a>
   </div>
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

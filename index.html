@@ -12,63 +12,77 @@
   <nav class="site-nav">
     <div class="container">
       <a href="index.html" class="logo">Andrew Boyd</a>
-      <a href="index.html">Overview</a>
-      <a href="docs/infrastructure-automation.html">Infrastructure &amp; Automation</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Overview</a>
+        <a href="docs/infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
+      </div>
+      <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
     </div>
   </nav>
 
-  <div class="container">
-    <div class="page-header">
-      <h1>Platform Engineering Leadership</h1>
-      <p class="subtitle">Building resilient, scalable infrastructure systems that enable engineering teams to move fast with confidence.</p>
-    </div>
-
-    <!-- Professional framing -->
-    <div class="section">
-      <div class="section-label">Expertise</div>
-      <p>Specializing in platform engineering, cloud-native architectures, and DevOps automation. Focused on creating reliable infrastructure that removes bottlenecks and enables teams to deliver value consistently.</p>
-      <p>Deep expertise in translating business requirements into technical architectures that balance innovation with operational excellence, reliability, and scalability.</p>
-      <div class="callout">
-        <p>Infrastructure should be an enabler, not a constraint — designed to disappear so teams can focus on building great products.</p>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">Platform Engineering Leadership</div>
+      <h1 class="display-heading">Building systems that enable<br>teams to move fast.</h1>
+      <p class="hero-descriptor">Focused on creating reliable infrastructure that removes bottlenecks and enables teams to deliver value consistently.</p>
+      <div class="hero-actions">
+        <a href="#timeline" class="btn-black">Explore the journey →</a>
+        <a href="docs/infrastructure-automation.html" class="btn-gray">Platform approach</a>
       </div>
     </div>
+  </section>
 
-    <!-- Interactive timeline -->
-    <div id="timeline" class="section"></div>
+  <!-- Expertise -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Expertise</div>
+      <h2>Platform engineering, cloud-native architecture, and DevOps automation.</h2>
+      <p>Focused on creating reliable infrastructure that removes bottlenecks and enables teams to deliver value consistently. Every technical decision made with platform sustainability in mind — operability, team cognitive load, and system evolvability.</p>
+      <blockquote class="callout">
+        <p>"Infrastructure should be an enabler, not a constraint — designed to disappear so teams can focus on building great products."</p>
+      </blockquote>
+    </div>
+  </section>
 
-    <!-- Key decisions -->
-    <div class="section">
-      <div class="section-label">Architectural Approach</div>
-      <h2>Platform-First Thinking</h2>
-      <p>Every technical decision is made with platform sustainability in mind — considering long-term operability, team cognitive load, and system evolvability.</p>
-      <div class="decisions-strip">
+  <!-- Engineering Journey (timeline injected by JS) -->
+  <section class="section" id="timeline"></section>
+
+  <!-- Platform-first thinking -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Architectural Approach</div>
+      <h2>Platform-first thinking.</h2>
+      <p>Every decision made with platform sustainability in mind — considering long-term operability, team cognitive load, and system evolvability.</p>
+      <div class="cards-grid">
         <div class="decision-card">
-          <div class="decision-label">Platform Strategy</div>
+          <div class="card-eyebrow">Platform Strategy</div>
           <h4>Internal Developer Platforms</h4>
           <p>Building paved paths that abstract infrastructure complexity while maintaining flexibility for advanced use cases.</p>
         </div>
         <div class="decision-card">
-          <div class="decision-label">Reliability Engineering</div>
+          <div class="card-eyebrow">Reliability Engineering</div>
           <h4>Observability-Driven Design</h4>
           <p>Instrumenting systems for deep visibility into performance, errors, and business impact from the outset.</p>
         </div>
         <div class="decision-card">
-          <div class="decision-label">Automation Focus</div>
+          <div class="card-eyebrow">Automation Focus</div>
           <h4>GitOps and Infrastructure as Code</h4>
           <p>Treating infrastructure as software — version-controlled, tested, and deployed through automated pipelines.</p>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Infrastructure band -->
-  <div class="infra-band">
+  <!-- Platform as a Product band -->
+  <section class="platform-band">
     <div class="container">
-      <h2>Platform as a Product</h2>
-      <p>Infrastructure platforms should be treated as products — with clear APIs, documentation, SLAs, and feedback loops with their users (engineering teams). The best platforms enable self-service while providing guardrails for safety and compliance.</p>
-      <a href="docs/infrastructure-automation.html">Explore the platform approach →</a>
+      <div class="eyebrow">Platform as a Product</div>
+      <h2>Infrastructure built like software.</h2>
+      <p>Platforms should be treated as products — with clear APIs, documentation, SLAs, and feedback loops. The best platforms enable self-service while providing guardrails for safety and compliance.</p>
+      <a href="docs/infrastructure-automation.html" class="btn-black">Explore the platform approach →</a>
     </div>
-  </div>
+  </section>
 
   <footer class="site-footer">
     <div class="container">

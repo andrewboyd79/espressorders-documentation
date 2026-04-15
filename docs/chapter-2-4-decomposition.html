@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 2: Platform Evolution — Engineering Leadership Case Study</title>
+  <title>Chapter 2: Decomposition — Andrew Boyd</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -11,33 +11,60 @@
   <nav class="site-nav">
     <div class="container">
       <a href="../index.html" class="logo">Andrew Boyd</a>
-      <a href="../index.html">Overview</a>
-      <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">Overview</a>
+        <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
+      </div>
+      <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
     </div>
   </nav>
 
-  <div class="container">
-    <div class="page-header">
-      <div class="section-label">Case Study 2</div>
-      <h1>Platform Evolution Through Strategic Decomposition</h1>
-      <p class="subtitle">How incremental platform improvements enable scaling without disruption.</p>
-      <div class="tech-tags">
-        <span class="tag">Platform Evolution</span>
-        <span class="tag">Strangler Fig Pattern</span>
-        <span class="tag">Microservices</span>
-        <span class="tag">Event-Driven Architecture</span>
-        <span class="tag">Infrastructure as Code</span>
-        <span class="tag">Observability</span>
-        <span class="tag">Platform Engineering</span>
-      </div>
-    </div>
+  <!-- Chapter tab strip -->
+  <nav class="chapter-nav">
+    <a href="chapter-1-monolith.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-1">1</span> Monolith
+    </a>
+    <a href="chapter-2-4-decomposition.html" class="chapter-tab active">
+      <span class="mini-dot mini-dot-2">2</span> Decomposition
+    </a>
+    <a href="chapter-5-7-maturity.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-3">3</span> Maturity
+    </a>
+    <a href="chapter-9-mobile.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-4">4</span> Mobile
+    </a>
+    <a href="infrastructure-automation.html" class="chapter-tab chapter-tab-infra">
+      <span class="mini-dot mini-dot-infra">⚙</span> Infrastructure
+    </a>
+  </nav>
 
-    <div class="section content-body">
-      <h3>The Scaling Challenge</h3>
+  <div class="page-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-label">On this page</div>
+      <a href="#why-decompose" class="sidebar-link active">Why decompose</a>
+      <a href="#strangler-fig" class="sidebar-link">Strangler Fig pattern</a>
+      <a href="#services" class="sidebar-link">Platform services</a>
+      <a href="#event-driven" class="sidebar-link">Event-driven reliability</a>
+      <a href="#trade-offs" class="sidebar-link">Key trade-offs</a>
+      <a href="#decision-record" class="sidebar-link">Decision record</a>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+
+      <div class="chapter-header">
+        <div class="eyebrow">Chapter 2 · Decomposition</div>
+        <h1>Platform Evolution Through Strategic Decomposition</h1>
+        <p>How incremental platform improvements enable scaling without disruption.</p>
+      </div>
+
+      <h3 id="why-decompose">The Scaling Challenge</h3>
       <p>As systems grow, the tension between deployment simplicity and operational scalability becomes a critical platform engineering concern. This case study examines how the Strangler Fig pattern enabled evolutionary platform improvement without disrupting ongoing operations — a key capability for platform teams managing live systems.</p>
       <p>The challenge wasn't technical decomposition itself, but doing so while maintaining service continuity, team velocity, and business value delivery. Platform thinking reframes this as an evolutionary improvement challenge rather than a revolutionary rewrite.</p>
 
-      <h3>Platform Strategy: Strangler Fig Pattern</h3>
+      <h3 id="strangler-fig">Platform Strategy: Strangler Fig Pattern</h3>
       <p>The Strangler Fig pattern represents a platform engineering approach to system evolution: delivering incremental value while maintaining system stability and enabling safe experimentation. Rather than viewing it as a technical tactic, it's a philosophy of platform improvement that respects existing investments while enabling future capability.</p>
       <p><code>espressorders-ms</code> served as an evolutionary platform layer — progressively enabling new capabilities while preserving existing functionality. This approach aligns with platform principles of making change safe, reversible, and value-delivering at every step.</p>
 
@@ -45,24 +72,24 @@
         <div class="diagram-row">
           <div class="diagram-box">ALB</div>
           <div class="diagram-arrow">→</div>
-          <div class="diagram-box accent-sky">espressorders-ms (facade)</div>
+          <div class="diagram-box primary">espressorders-ms (facade)</div>
         </div>
         <div class="diagram-row">
-          <div class="diagram-box accent-sky">Facade</div>
+          <div class="diagram-box primary">Facade</div>
           <div class="diagram-arrow">→</div>
           <div class="diagram-box">Catalogue Service</div>
           <div class="diagram-arrow">&nbsp;</div>
           <div class="diagram-box">Data Store</div>
         </div>
         <div class="diagram-row">
-          <div class="diagram-box accent-sky">Facade</div>
+          <div class="diagram-box primary">Facade</div>
           <div class="diagram-arrow">→</div>
           <div class="diagram-box">Processing Service</div>
           <div class="diagram-arrow">&nbsp;</div>
           <div class="diagram-box">State Store</div>
         </div>
         <div class="diagram-row">
-          <div class="diagram-box accent-sky">Facade</div>
+          <div class="diagram-box primary">Facade</div>
           <div class="diagram-arrow">→</div>
           <div class="diagram-box">Transaction Service</div>
           <div class="diagram-arrow">&nbsp;</div>
@@ -77,7 +104,7 @@
         </div>
       </div>
 
-      <h3>Platform Services Identified</h3>
+      <h3 id="services">Platform Services Identified</h3>
       <ul>
         <li><strong>Read Services</strong> — FastAPI services for catalog data, backed by scalable storage, consumed through the evolutionary facade</li>
         <li><strong>State Services</strong> — FastAPI services managing session state with appropriate storage choices for access patterns and scale requirements</li>
@@ -85,30 +112,56 @@
         <li><strong>Delivery Services</strong> — FastAPI services consuming event streams to perform side effects like notifications and communications</li>
       </ul>
 
-      <h3>Platform Patterns: Event-Driven Reliability</h3>
+      <h3 id="event-driven">Platform Patterns: Event-Driven Reliability</h3>
       <p>Business processes that span multiple services require reliable coordination patterns. The Saga pattern — implemented via event streaming (SNS/SQS) — provides a platform-native approach to distributed transactions that maintains loose coupling while ensuring recoverability. Each service publishes events on success; interested services consume and act asynchronously, with compensating actions triggered by failure events.</p>
       <p>This represents a platform principle: using infrastructure services (event queues, streams) to enable reliable, observable business processes without tight coupling or distributed locks.</p>
 
-      <h3>Key trade-offs</h3>
+      <h3 id="trade-offs">Key trade-offs</h3>
       <ul>
         <li>The monolith remained deployed throughout — operational overhead, but zero migration risk</li>
         <li>DynamoDB for cart state was chosen over Aurora for horizontal scalability and session-scoped access patterns</li>
         <li>Asynchronous notification via SNS/SQS means emails may arrive seconds after order confirmation — acceptable for this use case</li>
       </ul>
 
-      <div id="decision-record" class="callout">
-        <p>The full decomposition decision — options considered, criteria applied, and trade-offs accepted — is recorded in the project's architecture decision records.</p>
+      <!-- ADR component -->
+      <div id="decision-record" class="adr">
+        <div class="adr-header">
+          <span class="adr-label">Architectural Decision Record · ADR-002</span>
+          <span class="adr-badge">Accepted</span>
+        </div>
+        <div class="adr-body">
+          <h4>Adopt Strangler Fig pattern for incremental service extraction</h4>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Context</div>
+              <p>The monolith needed decomposing without taking the system offline. A facade layer (espressorders-ms) allows incremental extraction with the existing system remaining live at each step.</p>
+            </div>
+            <div class="adr-section">
+              <div class="adr-section-label">Decision</div>
+              <p>Extract services one at a time behind the ALB facade. Route traffic to new services progressively. Deprecate monolith routes only after new services are stable.</p>
+            </div>
+          </div>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Consequences</div>
+              <p>Zero-downtime migration. Slightly more complex routing during transition period. Clear rollback path at every step. Monolith remains as operational overhead until fully deprecated.</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="section">
-      <a href="chapter-5-7-maturity.html" class="adr-link">Next: Operational Maturity →</a>
-    </div>
+    </main>
+  </div>
+
+  <!-- Bottom chapter navigation -->
+  <div class="chapter-nav-bottom">
+    <a href="chapter-1-monolith.html" class="btn-ghost">← Chapter 1: Monolith</a>
+    <a href="chapter-5-7-maturity.html" class="btn-black">Chapter 3: Maturity →</a>
   </div>
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

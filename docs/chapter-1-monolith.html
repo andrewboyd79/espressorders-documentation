@@ -47,6 +47,7 @@
       <a href="#what-was-built" class="sidebar-link">What was built</a>
       <a href="#constraint" class="sidebar-link">The constraint</a>
       <a href="#trade-offs" class="sidebar-link">Key trade-offs</a>
+      <a href="#decision-record" class="sidebar-link">Decision record</a>
     </aside>
 
     <!-- Main content -->
@@ -98,6 +99,33 @@
         <li>Session-based auth was left in place rather than rewritten — a deliberate deferral, not an oversight</li>
         <li>No API layer was added at this stage — that came with <a href="chapter-2-4-decomposition.html">espressorders-ms in Chapter 2</a></li>
       </ul>
+
+      <!-- ADR component -->
+      <div id="decision-record" class="adr">
+        <div class="adr-header">
+          <span class="adr-label">Architectural Decision Record · ADR-001</span>
+          <span class="adr-badge">Accepted</span>
+        </div>
+        <div class="adr-body">
+          <h4>Work with the existing monolith rather than a greenfield project</h4>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Context</div>
+              <p>A portfolio project needs a realistic starting point. Greenfield projects are clean but artificial — real DevOps and platform engineering work happens on codebases with accumulated assumptions, constraints, and technical decisions already baked in.</p>
+            </div>
+            <div class="adr-section">
+              <div class="adr-section-label">Decision</div>
+              <p>Use the existing Code Institute Diploma Django application as-is. Deploy it to AWS ECS without refactoring the codebase. Accept all inherited constraints — session-based auth, no API layer, tightly coupled views — and address them downstream.</p>
+            </div>
+          </div>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Consequences</div>
+              <p>Every constraint that followed — the JWT identity service, the Strangler Fig migration, the lack of an API layer at this stage — was real and inherited, not invented. The architectural decisions in later chapters are responses to genuine problems, not contrived ones.</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </main>
   </div>

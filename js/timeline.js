@@ -56,14 +56,14 @@ function buildTimeline() {
   if (!container) return;
 
   const label = document.createElement('div');
-  label.className = 'section-label';
+  label.className = 'eyebrow';
   label.textContent = 'Engineering Journey';
   container.appendChild(label);
 
   const track = document.createElement('div');
   track.className = 'timeline-track';
 
-  STAGES.forEach(stage => {
+  STAGES.forEach((stage, index) => {
     const node = document.createElement('div');
     node.className = 'stage-node';
     node.dataset.id = stage.id;
@@ -71,8 +71,7 @@ function buildTimeline() {
     node.setAttribute('aria-label', `View ${stage.label} details`);
 
     const dot = document.createElement('div');
-    dot.className = 'stage-dot';
-    dot.style.background = stage.colour;
+    dot.className = `stage-dot dot-${index + 1}`;
     dot.textContent = stage.number;
 
     const lbl = document.createElement('div');
@@ -126,28 +125,25 @@ function toggleStage(id) {
   container.innerHTML = '';
   const card = document.createElement('div');
   card.className = 'stage-card visible';
-  card.style.borderColor = stage.colour;
 
   const tags = stage.tech.map(t =>
     `<span class="tag">${t}</span>`
   ).join('');
 
   const adrBtn = stage.adrLink
-    ? `<a href="${stage.adrLink}" class="card-link" style="color:${stage.colour}">Decision record →</a>`
+    ? `<a href="${stage.adrLink}" class="btn-gray btn-sm">Decision record →</a>`
     : '';
 
   card.innerHTML = `
     <div class="stage-card-header">
-      <h3 style="color:${stage.colour}">${stage.label}</h3>
+      <h3>${stage.label}</h3>
       <span class="chapter-badge">${stage.chapter}</span>
     </div>
-    <div class="tagline" style="color:${stage.colour}">${stage.tagline}</div>
+    <div class="tagline">${stage.tagline}</div>
     <p class="summary">${stage.summary}</p>
     <div class="tech-tags">${tags}</div>
-    <div class="card-links">
-      <a href="${stage.docLink}" class="card-link primary" style="color:${stage.colour}">
-        <span>Read chapter →</span>
-      </a>
+    <div class="card-actions">
+      <a href="${stage.docLink}" class="btn-black btn-sm">Read chapter →</a>
       ${adrBtn}
     </div>
   `;

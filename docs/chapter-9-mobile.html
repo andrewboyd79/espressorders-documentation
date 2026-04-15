@@ -3,89 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 4: Mobile — EspressOrders</title>
+  <title>Chapter 4: Mobile — Andrew Boyd</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
   <nav class="site-nav">
     <div class="container">
-      <a href="../index.html" class="logo">EspressOrders</a>
-      <a href="../index.html">Overview</a>
-      <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
+      <a href="../index.html" class="logo">Andrew Boyd</a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">Overview</a>
+        <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
+      </div>
+      <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
     </div>
   </nav>
 
-  <div class="container">
-    <div class="page-header">
-      <div class="section-label">Chapter 4</div>
-      <h1>Mobile Client</h1>
-      <p class="subtitle">A React Native app built against an existing API — the point where every earlier design decision either pays off or costs you.</p>
-      <div class="tech-tags">
-        <span class="tag">React Native</span>
-        <span class="tag">Expo</span>
-        <span class="tag">EAS Build</span>
-        <span class="tag">AWS CodeBuild</span>
-        <span class="tag">Stripe React Native SDK</span>
-        <span class="tag">SecureStore</span>
-      </div>
-    </div>
+  <!-- Chapter tab strip -->
+  <nav class="chapter-nav">
+    <a href="chapter-1-monolith.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-1">1</span> Monolith
+    </a>
+    <a href="chapter-2-4-decomposition.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-2">2</span> Decomposition
+    </a>
+    <a href="chapter-5-7-maturity.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-3">3</span> Maturity
+    </a>
+    <a href="chapter-9-mobile.html" class="chapter-tab active">
+      <span class="mini-dot mini-dot-4">4</span> Mobile
+    </a>
+    <a href="infrastructure-automation.html" class="chapter-tab chapter-tab-infra">
+      <span class="mini-dot mini-dot-infra">⚙</span> Infrastructure
+    </a>
+  </nav>
 
-    <div class="section content-body">
-      <h3>The problem</h3>
+  <div class="page-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-label">On this page</div>
+      <a href="#problem" class="sidebar-link active">The problem</a>
+      <a href="#zero-backend-changes" class="sidebar-link">Zero backend changes</a>
+      <a href="#technology" class="sidebar-link">Technology decisions</a>
+      <a href="#cicd" class="sidebar-link">CI/CD pipeline</a>
+      <a href="#trade-offs" class="sidebar-link">Key trade-offs</a>
+      <a href="#decision-record" class="sidebar-link">Decision record</a>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+
+      <div class="chapter-header">
+        <div class="eyebrow">Chapter 4 · Mobile</div>
+        <h1>Mobile Client</h1>
+        <p>A React Native app built against an existing API — the point where every earlier design decision either pays off or costs you.</p>
+      </div>
+
+      <h3 id="problem">The problem</h3>
       <p>A coffee ordering platform without a mobile client is incomplete. The web application works, but in 2026 consumers expect to order from their phone — and the portfolio needed to demonstrate cross-platform thinking alongside the backend and infrastructure work.</p>
       <p>The question was whether the backend, built without a mobile client in mind, would support one without modification. API-first design is only proven when a second consumer arrives.</p>
 
-      <h3>The result: zero backend changes</h3>
+      <h3 id="zero-backend-changes">The result: zero backend changes</h3>
       <p>The mobile client was built against the existing APIs without modification to any backend service. Every design decision made in earlier chapters — stateless JWT authentication, RESTful service boundaries, Stripe payment intent API — mapped cleanly to mobile patterns. The backend required no changes.</p>
       <p>This was not luck. It was the consequence of building services with clean interfaces rather than interface-per-consumer — a discipline that is easy to skip when there is only one consumer.</p>
 
       <div class="diagram">
         <div class="diagram-row">
-          <div class="diagram-box accent-amber">React Native app</div>
+          <div class="diagram-box strong">React Native app</div>
           <div class="diagram-arrow">→ JWT</div>
           <div class="diagram-box">Identity service</div>
         </div>
         <div class="diagram-row">
-          <div class="diagram-box accent-amber">React Native app</div>
+          <div class="diagram-box strong">React Native app</div>
           <div class="diagram-arrow">→ REST</div>
           <div class="diagram-box">Catalogue · Cart · Order</div>
         </div>
         <div class="diagram-row">
-          <div class="diagram-box accent-amber">React Native app</div>
+          <div class="diagram-box strong">React Native app</div>
           <div class="diagram-arrow">→ Payment sheet</div>
           <div class="diagram-box">Stripe SDK</div>
         </div>
       </div>
 
-      <h3>Technology decisions</h3>
+      <h3 id="technology">Technology decisions</h3>
       <p><strong>Expo over bare React Native</strong> — managed workflow removes native build toolchain complexity for a portfolio project. EAS Build handles iOS and Android compilation on Expo's infrastructure.</p>
       <p><strong>JWT in SecureStore</strong> — tokens are stored in the device's secure enclave, not in AsyncStorage. The same security posture as the browser's httpOnly cookie, implemented for a native context.</p>
       <p><strong>Preview profile (iOS simulator) over App Store</strong> — a full App Store distribution build requires an Apple Developer Program account ($99/year). The <code>preview</code> profile produces an iOS simulator build via EAS without requiring certificates or a paid account. The CI/CD pipeline is fully demonstrated; the final distribution step is a known, documented prerequisite.</p>
 
-      <h3>CI/CD pipeline</h3>
+      <h3 id="cicd">CI/CD pipeline</h3>
       <p>The mobile app uses the same CodeBuild + GitHub webhook pattern as every other service. Two jobs: a CI job on the <code>dev</code> branch (TypeScript type check, Jest tests) and a release job on the <code>prod</code> branch (CI + EAS simulator build). The EAS token and API credentials are pulled from SSM Parameter Store at build time — stored in the Infra account where CodeBuild runs.</p>
 
-      <h3>Key trade-offs</h3>
+      <h3 id="trade-offs">Key trade-offs</h3>
       <ul>
         <li>Expo managed workflow over bare React Native — less control, significantly less complexity for a solo portfolio project</li>
         <li>Preview (simulator) build over production build — documented gap, not a hidden limitation</li>
         <li>Polling for order status (10-second interval) over WebSocket — simpler to implement, sufficient for the demo use case</li>
       </ul>
 
-      <div id="decision-record" class="callout">
-        <p>The full mobile client decision — framework selection, distribution approach, and CI/CD design — is recorded in the project's architecture decision records.</p>
+      <!-- ADR component -->
+      <div id="decision-record" class="adr">
+        <div class="adr-header">
+          <span class="adr-label">Architectural Decision Record · ADR-004</span>
+          <span class="adr-badge">Accepted</span>
+        </div>
+        <div class="adr-body">
+          <h4>Use Expo managed workflow with preview build profile</h4>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Context</div>
+              <p>A React Native mobile client is needed for the portfolio. Full App Store distribution requires a paid Apple Developer account ($99/year). The goal is to demonstrate the full CI/CD pipeline, not distribute to the App Store.</p>
+            </div>
+            <div class="adr-section">
+              <div class="adr-section-label">Decision</div>
+              <p>Use Expo managed workflow with EAS Build. Use the <code>preview</code> profile to produce an iOS simulator build — demonstrates the full pipeline without requiring paid certificates.</p>
+            </div>
+          </div>
+          <div class="adr-grid" style="margin-top: 12px;">
+            <div class="adr-section">
+              <div class="adr-section-label">Consequences</div>
+              <p>Full CI/CD pipeline demonstrated. Build runs on Expo's infrastructure via CodeBuild. Known gap: simulator build only, not device-installable without Apple Developer account. This is documented, not hidden.</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="section">
-      <a href="infrastructure-automation.html" class="adr-link">Next: Infrastructure &amp; Automation →</a>
-    </div>
+    </main>
+  </div>
+
+  <!-- Bottom chapter navigation -->
+  <div class="chapter-nav-bottom">
+    <a href="chapter-5-7-maturity.html" class="btn-ghost">← Chapter 3: Maturity</a>
+    <a href="infrastructure-automation.html" class="btn-black">Infrastructure &amp; Automation →</a>
   </div>
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

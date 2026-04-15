@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Platform Automation — Engineering Leadership Case Study</title>
+  <title>Infrastructure &amp; Automation — Andrew Boyd</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -11,20 +11,56 @@
   <nav class="site-nav">
     <div class="container">
       <a href="../index.html" class="logo">Andrew Boyd</a>
-      <a href="../index.html">Overview</a>
-      <a href="infrastructure-automation.html">Infrastructure &amp; Automation</a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">Overview</a>
+        <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
+      </div>
+      <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
     </div>
   </nav>
 
-  <div class="container">
-    <div class="page-header">
-      <div class="section-label">Platform Automation</div>
-      <h1>Platform Automation and Environment Orchestration</h1>
-      <p class="subtitle">Building self-service platforms that enable teams to move fast while maintaining governance and compliance.</p>
-    </div>
+  <!-- Chapter tab strip — Infrastructure tab active, right-aligned -->
+  <nav class="chapter-nav">
+    <a href="chapter-1-monolith.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-1">1</span> Monolith
+    </a>
+    <a href="chapter-2-4-decomposition.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-2">2</span> Decomposition
+    </a>
+    <a href="chapter-5-7-maturity.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-3">3</span> Maturity
+    </a>
+    <a href="chapter-9-mobile.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-4">4</span> Mobile
+    </a>
+    <a href="infrastructure-automation.html" class="chapter-tab chapter-tab-infra active">
+      <span class="mini-dot mini-dot-infra">⚙</span> Infrastructure
+    </a>
+  </nav>
 
-    <div class="section content-body">
-      <h3>Platform Consistency as Force Multiplier</h3>
+  <div class="page-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-label">On this page</div>
+      <a href="#platform-consistency" class="sidebar-link active">Platform consistency</a>
+      <a href="#repo-pattern" class="sidebar-link">Repo pattern</a>
+      <a href="#shared-infrastructure" class="sidebar-link">Shared infrastructure</a>
+      <a href="#cicd-pattern" class="sidebar-link">CI/CD pattern</a>
+      <a href="#environment-management" class="sidebar-link">Environment management</a>
+      <a href="#why-it-matters" class="sidebar-link">Why it matters</a>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+
+      <div class="chapter-header">
+        <div class="eyebrow">Platform Automation</div>
+        <h1>Platform Automation and Environment Orchestration</h1>
+        <p>Building self-service platforms that enable teams to move fast while maintaining governance and compliance.</p>
+      </div>
+
+      <h3 id="platform-consistency">Platform Consistency as Force Multiplier</h3>
       <p>Platform engineering excellence begins with establishing clear, repeatable patterns that reduce cognitive load and accelerate delivery. This case study examines how defining infrastructure patterns upfront creates compounding benefits across the entire platform lifecycle.</p>
       <p>This approach delivers three platform advantages:</p>
       <ul>
@@ -33,29 +69,29 @@
         <li><strong>Enhanced AI assistance</strong> — predictable structures enable AI tools to provide meaningful context-aware suggestions</li>
       </ul>
 
-      <div class="callout">
+      <blockquote class="callout">
         <p>"Decide the pattern once. Every repo follows it. Only diverge when you have a genuine reason."</p>
-      </div>
+      </blockquote>
 
-      <h3>The repo pattern</h3>
+      <h3 id="repo-pattern">The repo pattern</h3>
       <p>Every microservice follows a two-repo structure: an application repo (the service code) and a service-config repo (the CloudFormation infrastructure for that service). All eight service-config repos are structurally identical:</p>
 
       <div class="diagram">
         <div class="diagram-row">
-          <div class="diagram-box accent-sky">espressorders-[service]</div>
+          <div class="diagram-box strong">espressorders-[service]</div>
           <div class="diagram-arrow">+</div>
-          <div class="diagram-box accent-emerald">espressorders-[service]-service-config</div>
+          <div class="diagram-box primary">espressorders-[service]-service-config</div>
         </div>
         <div class="diagram-row">
-          <div class="diagram-box">Application code<br><small style="color:#9ca3af">dev / prod branches</small></div>
+          <div class="diagram-box">Application code<br><small>dev / prod branches</small></div>
           <div class="diagram-arrow">&nbsp;</div>
-          <div class="diagram-box">CloudFormation stack<br><small style="color:#9ca3af">ECS service · TG · listener rule</small></div>
+          <div class="diagram-box">CloudFormation stack<br><small>ECS service · TG · listener rule</small></div>
         </div>
       </div>
 
       <p>Both repos use the same branch model: <code>dev</code> for active development, <code>prod</code> for stable releases. The same CodeBuild pipeline pattern triggers on push to each branch.</p>
 
-      <h3>Shared infrastructure</h3>
+      <h3 id="shared-infrastructure">Shared infrastructure</h3>
       <p>Beneath the service layer, shared infrastructure is managed in dedicated repos — also following consistent patterns:</p>
       <ul>
         <li><strong>ecs-infrastructure</strong> — ECS cluster, Application Load Balancer, Route 53 A record. Deployed once; all services attach to it</li>
@@ -66,7 +102,7 @@
         <li><strong>deployment-cli</strong> — CloudFormation templates for CodeBuild projects and ECR repository policies. The tooling that creates the pipelines</li>
       </ul>
 
-      <h3>CI/CD pipeline pattern</h3>
+      <h3 id="cicd-pattern">CI/CD pipeline pattern</h3>
       <p>Every service uses the same pipeline pattern: a CodeBuild project with a GitHub webhook trigger, parameterised by branch, deployed via CloudFormation from <code>deployment-cli</code>. The buildspec lives in the centralised <code>buildspecs</code> repo rather than the application repo — a single place to update build configuration across the entire platform.</p>
 
       <div class="diagram">
@@ -75,7 +111,7 @@
           <div class="diagram-arrow">→ webhook</div>
           <div class="diagram-box">CodeBuild</div>
           <div class="diagram-arrow">→ reads from S3</div>
-          <div class="diagram-box accent-emerald">Buildspec YAML</div>
+          <div class="diagram-box primary">Buildspec YAML</div>
         </div>
         <div class="diagram-row">
           <div class="diagram-box">CodeBuild</div>
@@ -86,16 +122,16 @@
         </div>
       </div>
 
-      <h3>One-command environment management</h3>
+      <h3 id="environment-management">One-command environment management</h3>
       <p>Running nine ECS services continuously is expensive. For a portfolio project, the environment needs to be spun up for demonstrations and shut down afterwards. The <code>espressorders-spinup-automation</code> repo provides this: a Step Function that orchestrates the spin-up or spin-down of the entire environment in strict dependency order, triggered by a single CLI command.</p>
 
-      <div class="callout">
+      <blockquote class="callout">
         <p>This is the same pattern a platform engineering team would put behind a "Start Environment" button in an internal developer portal — complex orchestration abstracted to a single, repeatable action.</p>
-      </div>
+      </blockquote>
 
       <p>The dependency order matters: the ECS cluster must exist before services can attach to it; the ALB must exist before listener rules can be created; Aurora must be running before services that depend on it start. The Step Function enforces this order automatically, eliminating the manual coordination that would otherwise be required.</p>
 
-      <h3>Why this matters for production</h3>
+      <h3 id="why-it-matters">Why this matters for production</h3>
       <p>The patterns here are not academic. The two-repo structure, centralised buildspecs, infrastructure-as-code parameters, and automated environment orchestration are all patterns that translate directly to enterprise platform engineering:</p>
       <ul>
         <li>A new team service can be onboarded in hours by copying the existing pattern</li>
@@ -103,16 +139,18 @@
         <li>The platform is auditable — every parameter, every pipeline, every infrastructure change is tracked in version control</li>
         <li>It can be torn down and rebuilt from scratch — which means it can be ported to another project or organisation</li>
       </ul>
-    </div>
 
-    <div class="section">
-      <a href="../index.html" class="adr-link">← Back to Overview</a>
-    </div>
+    </main>
+  </div>
+
+  <!-- Bottom navigation — Overview only, no next -->
+  <div class="chapter-nav-bottom">
+    <a href="../index.html" class="btn-ghost">← Overview</a>
   </div>
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

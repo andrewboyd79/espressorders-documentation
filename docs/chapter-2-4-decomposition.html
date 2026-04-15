@@ -141,7 +141,7 @@
               <p>Extract services one at a time behind the ALB facade. Route traffic to new services progressively. Deprecate monolith routes only after new services are stable.</p>
             </div>
           </div>
-          <div class="adr-grid" style="margin-top: 12px;">
+          <div class="adr-grid">
             <div class="adr-section">
               <div class="adr-section-label">Consequences</div>
               <p>Zero-downtime migration. Slightly more complex routing during transition period. Clear rollback path at every step. Monolith remains as operational overhead until fully deprecated.</p>

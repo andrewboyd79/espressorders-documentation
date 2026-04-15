@@ -122,7 +122,7 @@
               <p>Use RS256 (RSA asymmetric signing). The identity service holds the private key and signs tokens. All other services use the public key to verify — no secret sharing required.</p>
             </div>
           </div>
-          <div class="adr-grid" style="margin-top: 12px;">
+          <div class="adr-grid">
             <div class="adr-section">
               <div class="adr-section-label">Consequences</div>
               <p>Any service can verify tokens independently. Slightly more complex key management. Tokens cannot be forged by a compromised consuming service. Clear separation between issuance and verification.</p>

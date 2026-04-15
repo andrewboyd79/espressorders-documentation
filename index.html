@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Andrew Boyd — Platform Engineering Leader</title>
-  <meta name="description" content="Platform engineering leader specializing in resilient, scalable infrastructure systems that power modern applications through cloud-native architectures, DevOps practices, and automated deployment pipelines.">
+  <title>EspressOrders — Engineering Case Study</title>
+  <meta name="description" content="Documentation for the EspressOrders project — a Django monolith evolved through microservices decomposition, operational maturity, and a React Native mobile client.">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <nav class="site-nav">
     <div class="container">
-      <a href="index.html" class="logo">Andrew Boyd</a>
+      <a href="index.html" class="logo">EspressOrders</a>
       <div class="nav-links">
         <a href="index.html" class="nav-link">Overview</a>
         <a href="docs/infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
@@ -23,9 +23,9 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <div class="eyebrow">Platform Engineering Leadership</div>
-      <h1 class="display-heading">Building systems that enable<br>teams to move fast.</h1>
-      <p class="hero-descriptor">Focused on creating reliable infrastructure that removes bottlenecks and enables teams to deliver value consistently.</p>
+      <div class="eyebrow">Engineering Case Study</div>
+      <h1 class="display-heading">A coffee ordering platform,<br>built to be learned from.</h1>
+      <p class="hero-descriptor">Documenting the evolution of EspressOrders — from Django monolith to microservices to mobile app — through real architectural decisions and deliberate engineering choices.</p>
       <div class="hero-actions">
         <a href="#timeline" class="btn-black">Explore the journey →</a>
         <a href="docs/infrastructure-automation.html" class="btn-gray">Platform approach</a>
@@ -33,14 +33,15 @@
     </div>
   </section>
 
-  <!-- Expertise -->
+  <!-- About this project -->
   <section class="section">
     <div class="container">
-      <div class="eyebrow">Expertise</div>
-      <h2>Platform engineering, cloud-native architecture, and DevOps automation.</h2>
-      <p>Focused on creating reliable infrastructure that removes bottlenecks and enables teams to deliver value consistently. Every technical decision made with platform sustainability in mind — operability, team cognitive load, and system evolvability.</p>
+      <div class="eyebrow">About this project</div>
+      <h2>A real codebase, evolved deliberately.</h2>
+      <p>EspressOrders started as a Code Institute Diploma project — a standard Django monolith with a PostgreSQL database, S3 for assets, and session-based authentication. Rather than leaving it there, it became the subject of an extended engineering exercise: decomposing it into microservices, adding operational maturity, and building a React Native mobile client against the resulting APIs.</p>
+      <p>Each stage introduced real constraints and required real decisions. This documentation captures those decisions — what was built, why it was built that way, and what each choice made easier or harder downstream.</p>
       <blockquote class="callout">
-        <p>"Infrastructure should be an enabler, not a constraint — designed to disappear so teams can focus on building great products."</p>
+        <p>"Every architectural decision here was made against a real codebase with real constraints — not a greenfield project designed to make the pattern look easy."</p>
       </blockquote>
     </div>
   </section>
@@ -50,45 +51,45 @@
     <div class="container"></div>
   </section>
 
-  <!-- Platform-first thinking -->
+  <!-- What this documents -->
   <section class="section">
     <div class="container">
-      <div class="eyebrow">Architectural Approach</div>
-      <h2>Platform-first thinking.</h2>
-      <p>Every decision made with platform sustainability in mind — considering long-term operability, team cognitive load, and system evolvability.</p>
+      <div class="eyebrow">What this documents</div>
+      <h2>Architecture, infrastructure, and the decisions behind them.</h2>
+      <p>Each chapter documents a stage of the project — what was built, what was decided, and why.</p>
       <div class="cards-grid">
         <div class="decision-card">
-          <div class="card-eyebrow">Platform Strategy</div>
-          <h4>Internal Developer Platforms</h4>
-          <p>Building paved paths that abstract infrastructure complexity while maintaining flexibility for advanced use cases.</p>
+          <div class="card-eyebrow">The Architecture</div>
+          <h4>Microservices via Strangler Fig</h4>
+          <p>Four FastAPI services extracted from a Django monolith — Catalogue, Cart, Order, and Notification — with event-driven coordination via SNS/SQS.</p>
         </div>
         <div class="decision-card">
-          <div class="card-eyebrow">Reliability Engineering</div>
-          <h4>Observability-Driven Design</h4>
-          <p>Instrumenting systems for deep visibility into performance, errors, and business impact from the outset.</p>
+          <div class="card-eyebrow">The Infrastructure</div>
+          <h4>AWS ECS, CloudFormation, CodeBuild</h4>
+          <p>Every service deployed via Infrastructure as Code, with a consistent two-repo pattern and centralised CI/CD pipeline across all eight services.</p>
         </div>
         <div class="decision-card">
-          <div class="card-eyebrow">Automation Focus</div>
-          <h4>GitOps and Infrastructure as Code</h4>
-          <p>Treating infrastructure as software — version-controlled, tested, and deployed through automated pipelines.</p>
+          <div class="card-eyebrow">The Decisions</div>
+          <h4>Architectural Decision Records</h4>
+          <p>Each significant choice is captured as an ADR — what options were considered, what was decided, and what the consequences were.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Platform as a Product band -->
+  <!-- Infrastructure band -->
   <section class="platform-band">
     <div class="container">
-      <div class="eyebrow">Platform as a Product</div>
+      <div class="eyebrow">Platform Automation</div>
       <h2>Infrastructure built like software.</h2>
-      <p>Platforms should be treated as products — with clear APIs, documentation, SLAs, and feedback loops. The best platforms enable self-service while providing guardrails for safety and compliance.</p>
+      <p>The platform behind EspressOrders — nine ECS services, a shared VPC, centralised CI/CD pipelines, and one-command environment orchestration — is documented in full.</p>
       <a href="docs/infrastructure-automation.html" class="btn-black">Explore the platform approach →</a>
     </div>
   </section>
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

@@ -235,6 +235,12 @@ a { color: inherit; text-decoration: none; }
 .project-steps li:nth-child(2)::before { background: var(--color-stone); }
 .project-steps li:nth-child(3)::before { background: var(--color-mid-dark); }
 .project-steps li:nth-child(4)::before { background: var(--color-black); }
+/* project-steps inside chapter content — match content body text */
+.content .project-steps li {
+  font-size: 15px;
+  color: var(--color-mid);
+  line-height: 1.7;
+}
 
 /* --- Timeline --- */
 .timeline-track {
@@ -619,7 +625,7 @@ a { color: inherit; text-decoration: none; }
   margin: 0;
   counter-reset: adr-step;
 }
-.adr-steps li {
+.adr-body .adr-steps li {
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -631,8 +637,8 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 6px;
   counter-increment: adr-step;
 }
-.adr-steps li:last-child { margin-bottom: 0; }
-.adr-steps li::before {
+.adr-body .adr-steps li:last-child { margin-bottom: 0; }
+.adr-body .adr-steps li::before {
   content: counter(adr-step);
   flex: 0 0 18px;
   height: 18px;
@@ -645,8 +651,8 @@ a { color: inherit; text-decoration: none; }
   background: var(--color-silver);
   margin-top: 2px;
 }
-.adr-steps li:nth-child(2)::before { background: var(--color-stone); }
-.adr-steps li:nth-child(3)::before { background: var(--color-mid-dark); }
+.adr-body .adr-steps li:nth-child(2)::before { background: var(--color-stone); }
+.adr-body .adr-steps li:nth-child(3)::before { background: var(--color-mid-dark); }
 .adr-section-label {
   display: block;
   font-size: 10px;

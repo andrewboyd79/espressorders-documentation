@@ -446,7 +446,7 @@ a { color: inherit; text-decoration: none; }
 .mini-dot-2 { background: var(--color-stone); }
 .mini-dot-3 { background: var(--color-mid-dark); }
 .mini-dot-4 { background: var(--color-black); }
-.mini-dot-infra { background: var(--color-near-black); }
+.mini-dot-infra { background: var(--color-near-black); border-radius: 50%; }
 
 /* --- Two-column page layout --- */
 .page-layout {

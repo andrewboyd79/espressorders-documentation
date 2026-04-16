@@ -119,7 +119,11 @@
             </div>
             <div class="adr-section">
               <div class="adr-section-label">Decision</div>
-              <p>Use RS256 (RSA asymmetric signing). The identity service holds the private key and signs tokens. All other services use the public key to verify — no secret sharing required.</p>
+              <ul class="adr-steps">
+                <li>Use RS256 (RSA asymmetric signing).</li>
+                <li>The identity service holds the private key and signs tokens.</li>
+                <li>All other services use the public key to verify — no secret sharing required.</li>
+              </ul>
             </div>
           </div>
           <div class="adr-grid">

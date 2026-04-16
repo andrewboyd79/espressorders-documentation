@@ -138,7 +138,11 @@
             </div>
             <div class="adr-section">
               <div class="adr-section-label">Decision</div>
-              <p>Extract services one at a time behind the ALB facade. Route traffic to new services progressively. Deprecate monolith routes only after new services are stable.</p>
+              <ul class="adr-steps">
+                <li>Extract services one at a time behind the ALB facade.</li>
+                <li>Route traffic to new services progressively.</li>
+                <li>Deprecate monolith routes only after new services are stable.</li>
+              </ul>
             </div>
           </div>
           <div class="adr-grid">

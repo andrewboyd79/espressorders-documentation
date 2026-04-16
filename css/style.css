@@ -621,7 +621,7 @@ a { color: inherit; text-decoration: none; }
 }
 .adr-steps li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-family: inherit;
   font-size: 13px;
@@ -643,6 +643,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   color: var(--color-white);
   background: var(--color-silver);
+  margin-top: 2px;
 }
 .adr-steps li:nth-child(2)::before { background: var(--color-stone); }
 .adr-steps li:nth-child(3)::before { background: var(--color-mid-dark); }

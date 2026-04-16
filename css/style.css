@@ -234,6 +234,7 @@ a { color: inherit; text-decoration: none; }
 }
 .project-steps li:nth-child(2)::before { background: var(--color-stone); }
 .project-steps li:nth-child(3)::before { background: var(--color-mid-dark); }
+.project-steps li:nth-child(4)::before { background: var(--color-black); }
 
 /* --- Timeline --- */
 .timeline-track {
@@ -622,7 +623,9 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   gap: 10px;
+  font-family: inherit;
   font-size: 13px;
+  font-weight: 400;
   color: var(--color-mid);
   line-height: 1.6;
   margin-bottom: 6px;

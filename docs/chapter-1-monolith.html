@@ -94,11 +94,23 @@
       <p>That is what makes this chapter interesting from an engineering perspective: the monolith was not cleaned up or idealised. It was deployed as-is, and every constraint it introduced was addressed downstream through deliberate architectural decisions.</p>
 
       <h3 id="trade-offs">Key trade-offs</h3>
-      <ul>
-        <li>The monolith continued running throughout the decomposition — the Strangler Fig pattern required it</li>
-        <li>Session-based auth was left in place rather than rewritten — a deliberate deferral, not an oversight</li>
-        <li>No API layer was added at this stage — that came with <a href="chapter-2-4-decomposition.html">espressorders-ms in Chapter 2</a></li>
-      </ul>
+      <div class="cards-grid">
+        <div class="decision-card">
+          <div class="card-eyebrow">Strangler Fig</div>
+          <h4>Monolith kept running throughout</h4>
+          <p>The Strangler Fig pattern required the monolith to remain deployed throughout the decomposition — operational overhead, but zero migration risk at each step.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">Auth deferral</div>
+          <h4>Session-based auth left in place</h4>
+          <p>Deliberately deferred rather than rewritten — a constraint addressed downstream through the JWT identity service, not an oversight.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">No API layer</div>
+          <h4>API layer added in Chapter 2</h4>
+          <p>No API layer was added at this stage — that came with <a href="chapter-2-4-decomposition.html">espressorders-ms</a> once the extraction work began.</p>
+        </div>
+      </div>
 
       <!-- ADR component -->
       <div id="decision-record" class="adr">
@@ -141,7 +153,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

@@ -87,19 +87,45 @@
       </div>
 
       <h3 id="technology">Technology decisions</h3>
-      <p><strong>Expo over bare React Native</strong> — managed workflow removes native build toolchain complexity for a portfolio project. EAS Build handles iOS and Android compilation on Expo's infrastructure.</p>
-      <p><strong>JWT in SecureStore</strong> — tokens are stored in the device's secure enclave, not in AsyncStorage. The same security posture as the browser's httpOnly cookie, implemented for a native context.</p>
-      <p><strong>Preview profile (iOS simulator) over App Store</strong> — a full App Store distribution build requires an Apple Developer Program account ($99/year). The <code>preview</code> profile produces an iOS simulator build via EAS without requiring certificates or a paid account. The CI/CD pipeline is fully demonstrated; the final distribution step is a known, documented prerequisite.</p>
+      <div class="cards-grid">
+        <div class="decision-card">
+          <div class="card-eyebrow">Expo</div>
+          <h4>Expo over bare React Native</h4>
+          <p>Managed workflow removes native build toolchain complexity. EAS Build handles iOS and Android compilation on Expo's infrastructure without requiring local Xcode or Android Studio setup.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">SecureStore</div>
+          <h4>JWT in SecureStore</h4>
+          <p>Tokens stored in the device's secure enclave, not AsyncStorage — the same security posture as a browser's httpOnly cookie, implemented for a native context.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">Preview profile</div>
+          <h4>Preview build over App Store</h4>
+          <p>EAS produces an iOS simulator build without requiring certificates or a paid Apple Developer account ($99/year). The full CI/CD pipeline is demonstrated; App Store distribution is a known, documented prerequisite.</p>
+        </div>
+      </div>
 
       <h3 id="cicd">CI/CD pipeline</h3>
       <p>The mobile app uses the same CodeBuild + GitHub webhook pattern as every other service. Two jobs: a CI job on the <code>dev</code> branch (TypeScript type check, Jest tests) and a release job on the <code>prod</code> branch (CI + EAS simulator build). The EAS token and API credentials are pulled from SSM Parameter Store at build time — stored in the Infra account where CodeBuild runs.</p>
 
       <h3 id="trade-offs">Key trade-offs</h3>
-      <ul>
-        <li>Expo managed workflow over bare React Native — less control, significantly less complexity for a solo portfolio project</li>
-        <li>Preview (simulator) build over production build — documented gap, not a hidden limitation</li>
-        <li>Polling for order status (10-second interval) over WebSocket — simpler to implement, sufficient for the demo use case</li>
-      </ul>
+      <div class="cards-grid">
+        <div class="decision-card">
+          <div class="card-eyebrow">Expo managed</div>
+          <h4>Less control, significantly less complexity</h4>
+          <p>Expo managed workflow over bare React Native — the right trade-off for a solo portfolio project where demonstrating architecture matters more than native customisation.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">Preview build</div>
+          <h4>Documented gap, not a hidden limitation</h4>
+          <p>Preview (simulator) build over a production App Store build — explicitly called out, not hidden. The CI/CD pipeline is fully demonstrated up to the distribution step.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">Polling</div>
+          <h4>10-second polling over WebSocket</h4>
+          <p>Polling for order status updates — simpler to implement and sufficient for the demo use case without introducing WebSocket infrastructure.</p>
+        </div>
+      </div>
 
       <!-- ADR component -->
       <div id="decision-record" class="adr">
@@ -142,7 +168,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

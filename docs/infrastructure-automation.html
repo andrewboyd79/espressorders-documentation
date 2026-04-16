@@ -63,11 +63,11 @@
       <h3 id="platform-consistency">Platform Consistency as Force Multiplier</h3>
       <p>Platform engineering excellence begins with establishing clear, repeatable patterns that reduce cognitive load and accelerate delivery. This case study examines how defining infrastructure patterns upfront creates compounding benefits across the entire platform lifecycle.</p>
       <p>This approach delivers three platform advantages:</p>
-      <ul>
+      <ol class="project-steps">
         <li><strong>Reduced cognitive load</strong> — teams can focus on business value rather than relearning infrastructure patterns</li>
         <li><strong>Accelerated delivery</strong> — new capabilities can be added by copying proven patterns rather than redesigning from scratch</li>
         <li><strong>Enhanced AI assistance</strong> — predictable structures enable AI tools to provide meaningful context-aware suggestions</li>
-      </ul>
+      </ol>
 
       <blockquote class="callout">
         <p>"Decide the pattern once. Every repo follows it. Only diverge when you have a genuine reason."</p>
@@ -93,14 +93,38 @@
 
       <h3 id="shared-infrastructure">Shared infrastructure</h3>
       <p>Beneath the service layer, shared infrastructure is managed in dedicated repos — also following consistent patterns:</p>
-      <ul>
-        <li><strong>ecs-infrastructure</strong> — ECS cluster, Application Load Balancer, Route 53 A record. Deployed once; all services attach to it</li>
-        <li><strong>vpc-infrastructure</strong> — VPC, subnets, security groups. The network foundation everything runs on</li>
-        <li><strong>task-definition</strong> — ECS task definitions for all services. The primary pipeline trigger: push here to kick off a rolling deployment</li>
-        <li><strong>parameters</strong> — All SSM parameters managed as infrastructure-as-code. No ad-hoc CLI parameter creation; every secret and config value is tracked in this repo</li>
-        <li><strong>buildspecs</strong> — Centralised CodeBuild YAML for all services. Synced to S3 on push to <code>dev</code>; CodeBuild reads from S3 at build time</li>
-        <li><strong>deployment-cli</strong> — CloudFormation templates for CodeBuild projects and ECR repository policies. The tooling that creates the pipelines</li>
-      </ul>
+      <div class="cards-grid">
+        <div class="decision-card">
+          <div class="card-eyebrow">ecs-infrastructure</div>
+          <h4>ECS cluster and load balancer</h4>
+          <p>ECS cluster, Application Load Balancer, Route 53 A record. Deployed once; all services attach to it.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">vpc-infrastructure</div>
+          <h4>Network foundation</h4>
+          <p>VPC, subnets, and security groups. The network layer everything else runs on.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">task-definition</div>
+          <h4>ECS task definitions</h4>
+          <p>Task definitions for all services. The primary pipeline trigger: push here to kick off a rolling deployment across the platform.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">parameters</div>
+          <h4>SSM parameter management</h4>
+          <p>All SSM parameters managed as infrastructure-as-code. No ad-hoc CLI parameter creation; every secret and config value is tracked in version control.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">buildspecs</div>
+          <h4>Centralised CodeBuild YAML</h4>
+          <p>Build specs for all services in one repo. Synced to S3 on push to <code>dev</code>; CodeBuild reads from S3 at build time.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">deployment-cli</div>
+          <h4>Pipeline and ECR tooling</h4>
+          <p>CloudFormation templates for CodeBuild projects and ECR repository policies. The tooling that creates the pipelines.</p>
+        </div>
+      </div>
 
       <h3 id="cicd-pattern">CI/CD pipeline pattern</h3>
       <p>Every service uses the same pipeline pattern: a CodeBuild project with a GitHub webhook trigger, parameterised by branch, deployed via CloudFormation from <code>deployment-cli</code>. The buildspec lives in the centralised <code>buildspecs</code> repo rather than the application repo — a single place to update build configuration across the entire platform.</p>
@@ -133,12 +157,12 @@
 
       <h3 id="why-it-matters">Why this matters for production</h3>
       <p>The patterns here are not academic. The two-repo structure, centralised buildspecs, infrastructure-as-code parameters, and automated environment orchestration are all patterns that translate directly to enterprise platform engineering:</p>
-      <ul>
+      <ol class="project-steps">
         <li>A new team service can be onboarded in hours by copying the existing pattern</li>
         <li>Environment promotion (dev → prod) is a single parameter change, not a process document</li>
         <li>The platform is auditable — every parameter, every pipeline, every infrastructure change is tracked in version control</li>
         <li>It can be torn down and rebuilt from scratch — which means it can be ported to another project or organisation</li>
-      </ul>
+      </ol>
 
     </main>
   </div>
@@ -150,7 +174,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

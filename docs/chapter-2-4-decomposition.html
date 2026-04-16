@@ -96,8 +96,6 @@
           <div class="diagram-box">Event Stream</div>
         </div>
         <div class="diagram-row">
-          <div class="diagram-box">&nbsp;</div>
-          <div class="diagram-arrow">&nbsp;</div>
           <div class="diagram-box">Delivery Service</div>
           <div class="diagram-arrow">&nbsp;</div>
           <div class="diagram-box">Notification Channel</div>
@@ -117,11 +115,23 @@
       <p>This represents a platform principle: using infrastructure services (event queues, streams) to enable reliable, observable business processes without tight coupling or distributed locks.</p>
 
       <h3 id="trade-offs">Key trade-offs</h3>
-      <ul>
-        <li>The monolith remained deployed throughout — operational overhead, but zero migration risk</li>
-        <li>DynamoDB for cart state was chosen over Aurora for horizontal scalability and session-scoped access patterns</li>
-        <li>Asynchronous notification via SNS/SQS means emails may arrive seconds after order confirmation — acceptable for this use case</li>
-      </ul>
+      <div class="cards-grid">
+        <div class="decision-card">
+          <div class="card-eyebrow">Deployment overhead</div>
+          <h4>Monolith remained deployed throughout</h4>
+          <p>Operational overhead accepted in exchange for zero migration risk — the monolith continued serving traffic at every step of extraction.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">DynamoDB</div>
+          <h4>DynamoDB over Aurora for cart state</h4>
+          <p>Chosen for horizontal scalability and session-scoped access patterns — a better fit than Aurora for ephemeral cart data.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">Async notifications</div>
+          <h4>SNS/SQS notification delay</h4>
+          <p>Emails may arrive seconds after order confirmation. Asynchronous delivery was acceptable for this use case and keeps the notification path decoupled.</p>
+        </div>
+      </div>
 
       <!-- ADR component -->
       <div id="decision-record" class="adr">
@@ -165,7 +175,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

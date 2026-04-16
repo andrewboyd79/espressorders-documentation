@@ -98,11 +98,23 @@
       <p>A dedicated integration test suite exercises the full system end-to-end — placing orders, verifying state across services, confirming notifications. These run against a deployed environment (not mocked), providing confidence that the service boundaries behave correctly under real network conditions.</p>
 
       <h3 id="trade-offs">Key trade-offs</h3>
-      <ul>
-        <li>SSE over WebSockets for the operations console — simpler protocol, sufficient for unidirectional updates</li>
-        <li>RS256 over HS256 for JWT signing — slightly more complex to set up, but the right choice for a multi-service architecture</li>
-        <li>Centralised buildspecs over per-repo buildspecs — one place to update pipeline configuration, at the cost of an S3 sync step on change</li>
-      </ul>
+      <div class="cards-grid">
+        <div class="decision-card">
+          <div class="card-eyebrow">SSE</div>
+          <h4>SSE over WebSockets for operations console</h4>
+          <p>Simpler protocol, sufficient for unidirectional updates to the operations dashboard. WebSocket bidirectionality wasn't needed.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">RS256</div>
+          <h4>RS256 over HS256 for JWT signing</h4>
+          <p>Slightly more complex to set up, but the right choice for a multi-service architecture where services verify tokens independently without sharing a secret.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">Centralised buildspecs</div>
+          <h4>One place for pipeline configuration</h4>
+          <p>Centralised buildspecs over per-repo — a single place to update build configuration across the platform, at the cost of an S3 sync step on change.</p>
+        </div>
+      </div>
 
       <!-- ADR component -->
       <div id="decision-record" class="adr">
@@ -146,7 +158,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Andrew Boyd · Platform Engineering Leader · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
     </div>
   </footer>
 

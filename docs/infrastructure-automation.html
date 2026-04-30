@@ -13,7 +13,7 @@
       <a href="../index.html" class="logo">EspressOrders</a>
       <div class="nav-links">
         <a href="../index.html" class="nav-link">Overview</a>
-        <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
+        <a href="infrastructure-automation.html" class="nav-link active">Infrastructure &amp; Automation</a>
       </div>
       <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
     </div>
@@ -49,6 +49,7 @@
       <a href="#cicd-pattern" class="sidebar-link">CI/CD pattern</a>
       <a href="#environment-management" class="sidebar-link">Environment management</a>
       <a href="#why-it-matters" class="sidebar-link">Why it matters</a>
+      <a href="#decision-record" class="sidebar-link">Decision record</a>
     </aside>
 
     <!-- Main content -->
@@ -60,8 +61,8 @@
         <p>Building self-service platforms that enable teams to move fast while maintaining governance and compliance.</p>
       </div>
 
-      <h3 id="platform-consistency">Platform Consistency as Force Multiplier</h3>
-      <p>Platform engineering excellence begins with establishing clear, repeatable patterns that reduce cognitive load and accelerate delivery. This case study examines how defining infrastructure patterns upfront creates compounding benefits across the entire platform lifecycle.</p>
+      <h2 id="platform-consistency">Platform Consistency as Force Multiplier</h2>
+      <p>Every service in this platform follows the same infrastructure pattern. Not because it was planned upfront, but because applying the same approach eight times made the reasoning obvious: one decision, made well, multiplied across every repo.</p>
       <p>This approach delivers three platform advantages:</p>
       <ol class="project-steps">
         <li>Reduced cognitive load — teams can focus on business value rather than relearning infrastructure patterns</li>
@@ -73,7 +74,7 @@
         <p>"Decide the pattern once. Every repo follows it. Only diverge when you have a genuine reason."</p>
       </blockquote>
 
-      <h3 id="repo-pattern">The repo pattern</h3>
+      <h2 id="repo-pattern">The repo pattern</h2>
       <p>Every microservice follows a two-repo structure: an application repo (the service code) and a service-config repo (the CloudFormation infrastructure for that service). All eight service-config repos are structurally identical:</p>
 
       <div class="diagram">
@@ -91,42 +92,42 @@
 
       <p>Both repos use the same branch model: <code>dev</code> for active development, <code>prod</code> for stable releases. The same CodeBuild pipeline pattern triggers on push to each branch.</p>
 
-      <h3 id="shared-infrastructure">Shared infrastructure</h3>
+      <h2 id="shared-infrastructure">Shared infrastructure</h2>
       <p>Beneath the service layer, shared infrastructure is managed in dedicated repos — also following consistent patterns:</p>
       <div class="cards-grid">
         <div class="decision-card">
           <div class="card-eyebrow">ecs-infrastructure</div>
-          <h4>ECS cluster and load balancer</h4>
+          <h3>ECS cluster and load balancer</h3>
           <p>ECS cluster, Application Load Balancer, Route 53 A record. Deployed once; all services attach to it.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">vpc-infrastructure</div>
-          <h4>Network foundation</h4>
+          <h3>Network foundation</h3>
           <p>VPC, subnets, and security groups. The network layer everything else runs on.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">task-definition</div>
-          <h4>ECS task definitions</h4>
+          <h3>ECS task definitions</h3>
           <p>Task definitions for all services. The primary pipeline trigger: push here to kick off a rolling deployment across the platform.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">parameters</div>
-          <h4>SSM parameter management</h4>
+          <h3>SSM parameter management</h3>
           <p>All SSM parameters managed as infrastructure-as-code. No ad-hoc CLI parameter creation; every secret and config value is tracked in version control.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">buildspecs</div>
-          <h4>Centralised CodeBuild YAML</h4>
+          <h3>Centralised CodeBuild YAML</h3>
           <p>Build specs for all services in one repo. Synced to S3 on push to <code>dev</code>; CodeBuild reads from S3 at build time.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">deployment-cli</div>
-          <h4>Pipeline and ECR tooling</h4>
+          <h3>Pipeline and ECR tooling</h3>
           <p>CloudFormation templates for CodeBuild projects and ECR repository policies. The tooling that creates the pipelines.</p>
         </div>
       </div>
 
-      <h3 id="cicd-pattern">CI/CD pipeline pattern</h3>
+      <h2 id="cicd-pattern">CI/CD pipeline pattern</h2>
       <p>Every service uses the same pipeline pattern: a CodeBuild project with a GitHub webhook trigger, parameterised by branch, deployed via CloudFormation from <code>deployment-cli</code>. The buildspec lives in the centralised <code>buildspecs</code> repo rather than the application repo — a single place to update build configuration across the entire platform.</p>
 
       <div class="diagram">
@@ -146,7 +147,7 @@
         </div>
       </div>
 
-      <h3 id="environment-management">One-command environment management</h3>
+      <h2 id="environment-management">One-command environment management</h2>
       <p>Running nine ECS services continuously is expensive. For a portfolio project, the environment needs to be spun up for demonstrations and shut down afterwards. The <code>espressorders-spinup-automation</code> repo provides this: a Step Function that orchestrates the spin-up or spin-down of the entire environment in strict dependency order, triggered by a single CLI command.</p>
 
       <blockquote class="callout">
@@ -155,7 +156,7 @@
 
       <p>The dependency order matters: the ECS cluster must exist before services can attach to it; the ALB must exist before listener rules can be created; Aurora must be running before services that depend on it start. The Step Function enforces this order automatically, eliminating the manual coordination that would otherwise be required.</p>
 
-      <h3 id="why-it-matters">Why this matters for production</h3>
+      <h2 id="why-it-matters">Why this matters for production</h2>
       <p>The patterns here are not academic. The two-repo structure, centralised buildspecs, infrastructure-as-code parameters, and automated environment orchestration are all patterns that translate directly to enterprise platform engineering:</p>
       <ol class="project-steps">
         <li>A new team service can be onboarded in hours by copying the existing pattern</li>
@@ -163,6 +164,37 @@
         <li>The platform is auditable — every parameter, every pipeline, every infrastructure change is tracked in version control</li>
         <li>It can be torn down and rebuilt from scratch — which means it can be ported to another project or organisation</li>
       </ol>
+
+      <!-- ADR component -->
+      <div id="decision-record" class="adr">
+        <div class="adr-header">
+          <span class="adr-label">Architectural Decision Record · ADR-010</span>
+          <span class="adr-badge">Accepted</span>
+        </div>
+        <div class="adr-body">
+          <h3>Use a two-repo pattern for every microservice</h3>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Context</div>
+              <p>Each service needs application code and infrastructure code. Keeping them together couples deployment tooling to application changes. Separating them allows infrastructure to be updated independently, and makes the pattern explicit rather than implied.</p>
+            </div>
+            <div class="adr-section">
+              <div class="adr-section-label">Decision</div>
+              <ul class="adr-steps">
+                <li>Every service gets two repos: one for application code, one for CloudFormation infrastructure.</li>
+                <li>Both repos use the same branch model: <code>dev</code> for active development, <code>prod</code> for stable releases.</li>
+                <li>Build specs live in a centralised <code>buildspecs</code> repo, not in individual service repos.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Consequences</div>
+              <p>Onboarding a new service means copying a known pattern rather than designing from scratch. Infrastructure changes are auditable in version control independent of application changes. The centralised buildspec pattern means a single update propagates to all eight pipelines without touching each service repo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </main>
   </div>

@@ -12,7 +12,7 @@
     <div class="container">
       <a href="../index.html" class="logo">EspressOrders</a>
       <div class="nav-links">
-        <a href="../index.html" class="nav-link">Overview</a>
+        <a href="../index.html" class="nav-link active">Overview</a>
         <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
       </div>
       <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
@@ -59,12 +59,12 @@
         <p>How working with existing systems builds deeper engineering insight than greenfield projects.</p>
       </div>
 
-      <h3 id="problem">The problem</h3>
+      <h2 id="problem">The problem</h2>
       <p>EspressOrders began as my final project for a Diploma in Full Stack Web Development at the Code Institute — a standard Django application with a PostgreSQL database, S3 for static and media assets, and a session-based authentication system. It was functional, reasonably structured, and entirely typical of a monolithic web application.</p>
       <p>It was also not designed to be decomposed. The codebase had the normal accumulation of assumptions that any real project develops: tightly coupled views and models, session-based auth that would not translate easily to stateless microservices, and no API layer because none was needed at the time.</p>
       <p>Rather than start from a clean demo project, I chose to work with this existing codebase. That constraint was the point — real DevOps and cloud engineering work happens on imperfect codebases, not greenfield ones.</p>
 
-      <h3 id="what-was-built">What was built in this chapter</h3>
+      <h2 id="what-was-built">What was built in this chapter</h2>
       <p>The monolith was containerised and deployed to AWS ECS behind an Application Load Balancer, with Aurora PostgreSQL as the database and S3 for static file serving. The infrastructure was defined in CloudFormation, following the same repeatable pattern used by every subsequent service.</p>
 
       <div class="diagram">
@@ -89,25 +89,25 @@
         </div>
       </div>
 
-      <h3 id="constraint">The constraint that shaped everything</h3>
+      <h2 id="constraint">The constraint that shaped everything</h2>
       <p>Django's session-based authentication stores session tokens in a cookie. Mobile clients and other services cannot easily consume cookie-based auth. This constraint — inherited from the original codebase — drove the later decision to build a dedicated JWT identity service rather than modify the monolith's auth system.</p>
       <p>That is what makes this chapter interesting from an engineering perspective: the monolith was not cleaned up or idealised. It was deployed as-is, and every constraint it introduced was addressed downstream through deliberate architectural decisions.</p>
 
-      <h3 id="trade-offs">Key trade-offs</h3>
+      <h2 id="trade-offs">Key trade-offs</h2>
       <div class="cards-grid">
         <div class="decision-card">
           <div class="card-eyebrow">Strangler Fig</div>
-          <h4>Monolith kept running throughout</h4>
+          <h3>Monolith kept running throughout</h3>
           <p>The Strangler Fig pattern required the monolith to remain deployed throughout the decomposition — operational overhead, but zero migration risk at each step.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">Auth deferral</div>
-          <h4>Session-based auth left in place</h4>
+          <h3>Session-based auth left in place</h3>
           <p>Deliberately deferred rather than rewritten — a constraint addressed downstream through the JWT identity service, not an oversight.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">No API layer</div>
-          <h4>API layer added in Chapter 2</h4>
+          <h3>API layer added in Chapter 2</h3>
           <p>No API layer was added at this stage — that came with <a href="chapter-2-4-decomposition.html">espressorders-ms</a> once the extraction work began.</p>
         </div>
       </div>
@@ -119,7 +119,7 @@
           <span class="adr-badge">Accepted</span>
         </div>
         <div class="adr-body">
-          <h4>Work with the existing monolith rather than a greenfield project</h4>
+          <h3>Work with the existing monolith rather than a greenfield project</h3>
           <div class="adr-grid">
             <div class="adr-section">
               <div class="adr-section-label">Context</div>

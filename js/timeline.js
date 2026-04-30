@@ -66,6 +66,13 @@ function buildTimeline() {
     node.dataset.id = stage.id;
     node.setAttribute('role', 'button');
     node.setAttribute('aria-label', `View ${stage.label} details`);
+    node.setAttribute('tabindex', '0');
+    node.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleStage(stage.id);
+      }
+    });
 
     const dot = document.createElement('div');
     dot.className = `stage-dot dot-${index + 1}`;
@@ -89,14 +96,15 @@ function buildTimeline() {
 
   container.appendChild(track);
 
+  const hint = document.createElement('p');
+  hint.className = 'timeline-hint';
+  hint.id = 'timeline-hint';
+  hint.textContent = 'Click any stage to explore';
+  container.appendChild(hint);
+
   const cardContainer = document.createElement('div');
   cardContainer.id = 'stage-card-container';
   container.appendChild(cardContainer);
-
-  const hint = document.createElement('p');
-  hint.className = 'timeline-hint';
-  hint.textContent = 'Click any stage to explore';
-  container.appendChild(hint);
 
   // Auto-expand first stage so the interaction is immediately obvious
   toggleStage(STAGES[0].id);
@@ -107,13 +115,17 @@ function toggleStage(id) {
   const container = document.getElementById('stage-card-container');
   const nodes = document.querySelectorAll('.stage-node');
 
+  const hint = document.getElementById('timeline-hint');
+
   if (activeStage === id) {
     activeStage = null;
     container.innerHTML = '';
     nodes.forEach(n => n.classList.remove('active'));
+    if (hint) hint.style.display = '';
     return;
   }
 
+  if (hint) hint.style.display = 'none';
   activeStage = id;
   nodes.forEach(n => {
     n.classList.toggle('active', n.dataset.id === id);

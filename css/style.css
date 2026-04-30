@@ -62,6 +62,29 @@ a { color: inherit; text-decoration: none; }
 .nav-link:hover { color: var(--color-black); }
 .nav-link.active { color: var(--color-black); font-weight: 500; }
 
+/* Skip link — visually hidden until focused */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 0 0 var(--radius-container) 0;
+  transform: translateY(-100%);
+  z-index: 100;
+  transition: transform 0.15s ease-out;
+}
+.skip-link:focus { transform: translateY(0); outline: none; }
+
+/* Focus ring — Ring Blue applied to all keyboard-focused interactive elements */
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
 /* --- Buttons --- */
 .btn-black {
   display: inline-block;
@@ -116,8 +139,8 @@ a { color: inherit; text-decoration: none; }
 /* --- Callout / blockquote --- */
 .callout {
   background: var(--color-snow);
-  border-left: 3px solid var(--color-light-gray);
-  border-radius: 0 var(--radius-container) var(--radius-container) 0;
+  border: 1px solid var(--color-light-gray);
+  border-radius: var(--radius-container);
   padding: 16px 20px;
   margin: 24px 0;
 }
@@ -153,7 +176,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
   margin-bottom: 20px;
 }
 .display-heading {
@@ -183,7 +206,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
   margin-bottom: 20px;
 }
 .section h2 {
@@ -324,7 +347,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
   padding-top: 4px;
 }
 .tagline { font-size: 15px; font-style: italic; color: var(--color-stone); margin-bottom: 12px; }
@@ -337,7 +360,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
   margin-bottom: 16px;
 }
 
@@ -359,7 +382,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
   margin-bottom: 8px;
 }
 .decision-card h3 { font-size: 15px; font-weight: 500; color: var(--color-black); margin-bottom: 6px; }
@@ -376,7 +399,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
   margin-bottom: 20px;
 }
 .platform-band h2 {
@@ -447,7 +470,7 @@ a { color: inherit; text-decoration: none; }
 .mini-dot-2 { background: var(--color-stone); }
 .mini-dot-3 { background: var(--color-mid-dark); }
 .mini-dot-4 { background: var(--color-black); }
-.mini-dot-infra { background: var(--color-near-black); border-radius: 50%; }
+.mini-dot-infra { background: var(--color-near-black); border-radius: var(--radius-pill); }
 
 /* --- Two-column page layout --- */
 .page-layout {
@@ -467,14 +490,14 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
   margin-bottom: 16px;
 }
 .sidebar-link {
   display: block;
   font-size: 13px;
   color: var(--color-stone);
-  padding: 6px 0 6px 12px;
+  padding: 10px 0 10px 12px;
   margin-left: -12px;
   border-left: 2px solid transparent;
 }
@@ -498,7 +521,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
   margin-bottom: 16px;
 }
 .chapter-header h1 {
@@ -604,7 +627,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: var(--color-stone);
 }
 .adr-badge {
   background: var(--color-light-gray);
@@ -718,6 +741,7 @@ a { color: inherit; text-decoration: none; }
   .container { padding: 0 20px; }
   .site-nav { padding: 0 20px; }
   .chapter-nav { padding: 0 20px; }
+  .nav-links { display: none; }
   .display-heading { font-size: 28px; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .chapter-nav-bottom { flex-direction: column; gap: 10px; align-items: flex-start; padding: 20px; }

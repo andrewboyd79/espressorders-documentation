@@ -12,7 +12,7 @@
     <div class="container">
       <a href="../index.html" class="logo">EspressOrders</a>
       <div class="nav-links">
-        <a href="../index.html" class="nav-link">Overview</a>
+        <a href="../index.html" class="nav-link active">Overview</a>
         <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
       </div>
       <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
@@ -60,11 +60,11 @@
         <p>How incremental platform improvements enable scaling without disruption.</p>
       </div>
 
-      <h3 id="why-decompose">The Scaling Challenge</h3>
+      <h2 id="why-decompose">The Scaling Challenge</h2>
       <p>As systems grow, the tension between deployment simplicity and operational scalability becomes a critical platform engineering concern. This case study examines how the Strangler Fig pattern enabled evolutionary platform improvement without disrupting ongoing operations — a key capability for platform teams managing live systems.</p>
       <p>The challenge wasn't technical decomposition itself, but doing so while maintaining service continuity, team velocity, and business value delivery. Platform thinking reframes this as an evolutionary improvement challenge rather than a revolutionary rewrite.</p>
 
-      <h3 id="strangler-fig">Platform Strategy: Strangler Fig Pattern</h3>
+      <h2 id="strangler-fig">Platform Strategy: Strangler Fig Pattern</h2>
       <p>The Strangler Fig pattern represents a platform engineering approach to system evolution: delivering incremental value while maintaining system stability and enabling safe experimentation. Rather than viewing it as a technical tactic, it's a philosophy of platform improvement that respects existing investments while enabling future capability.</p>
       <p><code>espressorders-ms</code> served as an evolutionary platform layer — progressively enabling new capabilities while preserving existing functionality. This approach aligns with platform principles of making change safe, reversible, and value-delivering at every step.</p>
 
@@ -102,7 +102,7 @@
         </div>
       </div>
 
-      <h3 id="services">Platform Services Identified</h3>
+      <h2 id="services">Platform Services Identified</h2>
       <ul>
         <li><strong>Read Services</strong> — FastAPI services for catalog data, backed by scalable storage, consumed through the evolutionary facade</li>
         <li><strong>State Services</strong> — FastAPI services managing session state with appropriate storage choices for access patterns and scale requirements</li>
@@ -110,25 +110,25 @@
         <li><strong>Delivery Services</strong> — FastAPI services consuming event streams to perform side effects like notifications and communications</li>
       </ul>
 
-      <h3 id="event-driven">Platform Patterns: Event-Driven Reliability</h3>
+      <h2 id="event-driven">Platform Patterns: Event-Driven Reliability</h2>
       <p>Business processes that span multiple services require reliable coordination patterns. The Saga pattern — implemented via event streaming (SNS/SQS) — provides a platform-native approach to distributed transactions that maintains loose coupling while ensuring recoverability. Each service publishes events on success; interested services consume and act asynchronously, with compensating actions triggered by failure events.</p>
       <p>This represents a platform principle: using infrastructure services (event queues, streams) to enable reliable, observable business processes without tight coupling or distributed locks.</p>
 
-      <h3 id="trade-offs">Key trade-offs</h3>
+      <h2 id="trade-offs">Key trade-offs</h2>
       <div class="cards-grid">
         <div class="decision-card">
           <div class="card-eyebrow">Deployment overhead</div>
-          <h4>Monolith remained deployed throughout</h4>
+          <h3>Monolith remained deployed throughout</h3>
           <p>Operational overhead accepted in exchange for zero migration risk — the monolith continued serving traffic at every step of extraction.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">DynamoDB</div>
-          <h4>DynamoDB over Aurora for cart state</h4>
+          <h3>DynamoDB over Aurora for cart state</h3>
           <p>Chosen for horizontal scalability and session-scoped access patterns — a better fit than Aurora for ephemeral cart data.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">Async notifications</div>
-          <h4>SNS/SQS notification delay</h4>
+          <h3>SNS/SQS notification delay</h3>
           <p>Emails may arrive seconds after order confirmation. Asynchronous delivery was acceptable for this use case and keeps the notification path decoupled.</p>
         </div>
       </div>
@@ -140,7 +140,7 @@
           <span class="adr-badge">Accepted</span>
         </div>
         <div class="adr-body">
-          <h4>Adopt Strangler Fig pattern for incremental service extraction</h4>
+          <h3>Adopt Strangler Fig pattern for incremental service extraction</h3>
           <div class="adr-grid">
             <div class="adr-section">
               <div class="adr-section-label">Context</div>

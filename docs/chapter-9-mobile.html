@@ -12,7 +12,7 @@
     <div class="container">
       <a href="../index.html" class="logo">EspressOrders</a>
       <div class="nav-links">
-        <a href="../index.html" class="nav-link">Overview</a>
+        <a href="../index.html" class="nav-link active">Overview</a>
         <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
       </div>
       <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
@@ -60,11 +60,11 @@
         <p>A React Native app built against an existing API — the point where every earlier design decision either pays off or costs you.</p>
       </div>
 
-      <h3 id="problem">The problem</h3>
+      <h2 id="problem">The problem</h2>
       <p>A coffee ordering platform without a mobile client is incomplete. The web application works, but in 2026 consumers expect to order from their phone — and the portfolio needed to demonstrate cross-platform thinking alongside the backend and infrastructure work.</p>
       <p>The question was whether the backend, built without a mobile client in mind, would support one without modification. API-first design is only proven when a second consumer arrives.</p>
 
-      <h3 id="zero-backend-changes">The result: zero backend changes</h3>
+      <h2 id="zero-backend-changes">The result: zero backend changes</h2>
       <p>The mobile client was built against the existing APIs without modification to any backend service. Every design decision made in earlier chapters — stateless JWT authentication, RESTful service boundaries, Stripe payment intent API — mapped cleanly to mobile patterns. The backend required no changes.</p>
       <p>This was not luck. It was the consequence of building services with clean interfaces rather than interface-per-consumer — a discipline that is easy to skip when there is only one consumer.</p>
 
@@ -86,43 +86,43 @@
         </div>
       </div>
 
-      <h3 id="technology">Technology decisions</h3>
+      <h2 id="technology">Technology decisions</h2>
       <div class="cards-grid">
         <div class="decision-card">
           <div class="card-eyebrow">Expo</div>
-          <h4>Expo over bare React Native</h4>
+          <h3>Expo over bare React Native</h3>
           <p>Managed workflow removes native build toolchain complexity. EAS Build handles iOS and Android compilation on Expo's infrastructure without requiring local Xcode or Android Studio setup.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">SecureStore</div>
-          <h4>JWT in SecureStore</h4>
+          <h3>JWT in SecureStore</h3>
           <p>Tokens stored in the device's secure enclave, not AsyncStorage — the same security posture as a browser's httpOnly cookie, implemented for a native context.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">Preview profile</div>
-          <h4>Preview build over App Store</h4>
+          <h3>Preview build over App Store</h3>
           <p>EAS produces an iOS simulator build without requiring certificates or a paid Apple Developer account ($99/year). The full CI/CD pipeline is demonstrated; App Store distribution is a known, documented prerequisite.</p>
         </div>
       </div>
 
-      <h3 id="cicd">CI/CD pipeline</h3>
+      <h2 id="cicd">CI/CD pipeline</h2>
       <p>The mobile app uses the same CodeBuild + GitHub webhook pattern as every other service. Two jobs: a CI job on the <code>dev</code> branch (TypeScript type check, Jest tests) and a release job on the <code>prod</code> branch (CI + EAS simulator build). The EAS token and API credentials are pulled from SSM Parameter Store at build time — stored in the Infra account where CodeBuild runs.</p>
 
-      <h3 id="trade-offs">Key trade-offs</h3>
+      <h2 id="trade-offs">Key trade-offs</h2>
       <div class="cards-grid">
         <div class="decision-card">
           <div class="card-eyebrow">Expo managed</div>
-          <h4>Less control, significantly less complexity</h4>
+          <h3>Less control, significantly less complexity</h3>
           <p>Expo managed workflow over bare React Native — the right trade-off for a solo portfolio project where demonstrating architecture matters more than native customisation.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">Preview build</div>
-          <h4>Documented gap, not a hidden limitation</h4>
+          <h3>Documented gap, not a hidden limitation</h3>
           <p>Preview (simulator) build over a production App Store build — explicitly called out, not hidden. The CI/CD pipeline is fully demonstrated up to the distribution step.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">Polling</div>
-          <h4>10-second polling over WebSocket</h4>
+          <h3>10-second polling over WebSocket</h3>
           <p>Polling for order status updates — simpler to implement and sufficient for the demo use case without introducing WebSocket infrastructure.</p>
         </div>
       </div>
@@ -134,7 +134,7 @@
           <span class="adr-badge">Accepted</span>
         </div>
         <div class="adr-body">
-          <h4>Use Expo managed workflow with preview build profile</h4>
+          <h3>Use Expo managed workflow with preview build profile</h3>
           <div class="adr-grid">
             <div class="adr-section">
               <div class="adr-section-label">Context</div>

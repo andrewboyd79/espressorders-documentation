@@ -12,7 +12,7 @@
     <div class="container">
       <a href="../index.html" class="logo">EspressOrders</a>
       <div class="nav-links">
-        <a href="../index.html" class="nav-link">Overview</a>
+        <a href="../index.html" class="nav-link active">Overview</a>
         <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
       </div>
       <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
@@ -61,15 +61,15 @@
         <p>Building operable platforms that teams can trust and operate confidently.</p>
       </div>
 
-      <h3 id="problem">The problem</h3>
+      <h2 id="problem">The problem</h2>
       <p>A distributed system that works is not the same as a distributed system that is operable. After decomposition, EspressOrders had five independently deployed services with no shared visibility into order state, no standardised authentication across services, and no automated pipeline to validate that changes to one service did not break others.</p>
       <p>These chapters addressed operational maturity: the work that turns a proof of concept into something you could hand to an on-call engineer at 3am.</p>
 
-      <h3 id="operations-console">Operations console</h3>
+      <h2 id="operations-console">Operations console</h2>
       <p>The operations console is a FastAPI service providing a real-time order queue for staff — orders appear as they are placed, without polling. This is implemented using Server-Sent Events (SSE): a persistent HTTP connection over which the server pushes updates to the client. Simpler than WebSockets for unidirectional data, and sufficient for this use case.</p>
       <p>Access is protected by staff authentication — a separate concern from customer identity, handled within the operations service itself.</p>
 
-      <h3 id="identity-service">Identity service</h3>
+      <h2 id="identity-service">Identity service</h2>
       <p>The mobile client (Chapter 4) required stateless authentication — JWT tokens rather than session cookies. Rather than modify the monolith's auth system, a dedicated identity service was built: a FastAPI service issuing RS256-signed JWTs, with public key verification available to any consuming service.</p>
       <p>RS256 (asymmetric signing) was chosen over HS256 (symmetric) so that services can verify tokens without access to the signing key. Any service can verify; only the identity service can issue.</p>
 
@@ -91,27 +91,27 @@
         </div>
       </div>
 
-      <h3 id="cicd">CI/CD pipeline</h3>
+      <h2 id="cicd">CI/CD pipeline</h2>
       <p>Each service has its own CodeBuild project, triggered by a push to the relevant GitHub branch. Buildspecs are centralised in a dedicated repository and synced to S3 — a single source of truth for build configuration across all services. The same pipeline pattern is used for every service, including the mobile app added in Chapter 4.</p>
 
-      <h3 id="integration-tests">Integration tests</h3>
+      <h2 id="integration-tests">Integration tests</h2>
       <p>A dedicated integration test suite exercises the full system end-to-end — placing orders, verifying state across services, confirming notifications. These run against a deployed environment (not mocked), providing confidence that the service boundaries behave correctly under real network conditions.</p>
 
-      <h3 id="trade-offs">Key trade-offs</h3>
+      <h2 id="trade-offs">Key trade-offs</h2>
       <div class="cards-grid">
         <div class="decision-card">
           <div class="card-eyebrow">SSE</div>
-          <h4>SSE over WebSockets for operations console</h4>
+          <h3>SSE over WebSockets for operations console</h3>
           <p>Simpler protocol, sufficient for unidirectional updates to the operations dashboard. WebSocket bidirectionality wasn't needed.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">RS256</div>
-          <h4>RS256 over HS256 for JWT signing</h4>
+          <h3>RS256 over HS256 for JWT signing</h3>
           <p>Slightly more complex to set up, but the right choice for a multi-service architecture where services verify tokens independently without sharing a secret.</p>
         </div>
         <div class="decision-card">
           <div class="card-eyebrow">Centralised buildspecs</div>
-          <h4>One place for pipeline configuration</h4>
+          <h3>One place for pipeline configuration</h3>
           <p>Centralised buildspecs over per-repo — a single place to update build configuration across the platform, at the cost of an S3 sync step on change.</p>
         </div>
       </div>
@@ -123,7 +123,7 @@
           <span class="adr-badge">Accepted</span>
         </div>
         <div class="adr-body">
-          <h4>Use RS256 asymmetric signing for JWT identity service</h4>
+          <h3>Use RS256 asymmetric signing for JWT identity service</h3>
           <div class="adr-grid">
             <div class="adr-section">
               <div class="adr-section-label">Context</div>

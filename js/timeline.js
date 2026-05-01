@@ -50,6 +50,8 @@ let activeStage = null;
 function buildTimeline() {
   const section = document.getElementById('timeline');
   if (!section) return;
+  const fallback = document.getElementById('timeline-static-fallback');
+  if (fallback) fallback.style.display = 'none';
   const container = section.querySelector('.container') || section;
 
   const label = document.createElement('div');

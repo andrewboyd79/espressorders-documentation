@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Close when clicking outside
   document.addEventListener('click', (e) => {
-    if (open && !wrapper.contains(e.target) && e.target !== trigger) {
+    if (open && !wrapper.contains(e.target) && !trigger.contains(e.target)) {
       closeSearch();
     }
   });

@@ -409,51 +409,7 @@ a { color: inherit; text-decoration: none; }
 .decision-card h3 { font-size: 15px; font-weight: 500; color: var(--color-black); margin-bottom: 6px; }
 .decision-card p { font-size: 13px; color: var(--color-stone); line-height: 1.5; }
 
-/* --- What This Documents: Definition List --- */
-.what-docs-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-top: 28px;
-}
-.what-docs-item {
-  display: grid;
-  grid-template-columns: 1fr;
-  padding: 20px 0;
-  border-top: 1px solid var(--color-light-gray);
-}
-.what-docs-item:last-child {
-  border-bottom: 1px solid var(--color-light-gray);
-}
-.what-docs-item dt {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 8px;
-}
-.what-docs-item strong {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--color-black);
-}
-.what-docs-pill {
-  flex-shrink: 0;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--color-stone);
-  background: var(--color-light-gray);
-  border-radius: var(--radius-pill);
-  padding: 3px 10px;
-  letter-spacing: 0.02em;
-}
-.what-docs-item dd {
-  font-size: 14px;
-  color: var(--color-stone);
-  line-height: 1.5;
-  margin: 0;
-  padding-left: 0;
-}
+
 /* --- Platform Band --- */
 .platform-band {
   background: var(--color-snow);

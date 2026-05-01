@@ -479,9 +479,7 @@ a { color: inherit; text-decoration: none; }
 /* --- Two-column page layout --- */
 .page-layout {
   display: grid;
-  grid-template-columns: 220px 1fr 200px;
-  max-width: 1024px;
-  margin: 0 auto;
+  grid-template-columns: minmax(200px, 1fr) 4fr minmax(200px, 1fr);
   min-height: calc(100vh - 112px);
 }
 

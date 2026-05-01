@@ -68,6 +68,7 @@ function buildTimeline() {
     node.dataset.id = stage.id;
     node.setAttribute('role', 'button');
     node.setAttribute('aria-label', `View ${stage.label} details`);
+    node.setAttribute('aria-expanded', 'false');
     node.setAttribute('tabindex', '0');
     node.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -122,7 +123,7 @@ function toggleStage(id) {
   if (activeStage === id) {
     activeStage = null;
     container.innerHTML = '';
-    nodes.forEach(n => n.classList.remove('active'));
+    nodes.forEach(n => { n.classList.remove('active'); n.setAttribute('aria-expanded', 'false'); });
     if (hint) hint.style.display = '';
     return;
   }
@@ -130,7 +131,9 @@ function toggleStage(id) {
   if (hint) hint.style.display = 'none';
   activeStage = id;
   nodes.forEach(n => {
-    n.classList.toggle('active', n.dataset.id === id);
+    const isActive = n.dataset.id === id;
+    n.classList.toggle('active', isActive);
+    n.setAttribute('aria-expanded', isActive ? 'true' : 'false');
   });
 
   container.innerHTML = '';

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Results panel
   const results = document.createElement('div');
   results.className = 'search-results';
-  results.setAttribute('role', 'listbox');
+  results.setAttribute('role', 'list');
   results.setAttribute('aria-label', 'Search results');
   wrapper.appendChild(results);
 
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     results.innerHTML = matched.map(entry => {
       const url = 'docs/' + entry.chapter + '#' + entry.id;
       const chapterLabel = entry.chapterTitle.replace('Chapter ', '').replace('Infrastructure', 'Infra');
-      return '<a href="' + url + '" class="search-result-item" role="option">' +
+      return '<a href="' + url + '" class="search-result-item">' +
         '<span class="search-result-chapter">' + escapeHtml(chapterLabel) + '</span>' +
         '<span class="search-result-section">' + escapeHtml(entry.section) + '</span>' +
       '</a>';

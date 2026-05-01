@@ -89,8 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const inDocs = window.location.pathname.includes('/docs/');
+    const docsPrefix = inDocs ? '' : 'docs/';
+
     results.innerHTML = matched.map(entry => {
-      const url = 'docs/' + entry.chapter + '#' + entry.id;
+      const url = docsPrefix + entry.chapter + '#' + entry.id;
       const chapterLabel = entry.chapterTitle.replace('Chapter ', '').replace('Infrastructure', 'Infra');
       return '<a href="' + url + '" class="search-result-item">' +
         '<span class="search-result-chapter">' + escapeHtml(chapterLabel) + '</span>' +

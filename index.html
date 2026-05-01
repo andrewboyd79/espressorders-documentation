@@ -97,23 +97,32 @@
       <div class="eyebrow">What this documents</div>
       <h2>Architecture, infrastructure, and the decisions behind them.</h2>
       <p>Each chapter documents a stage of the project — what was built, what was decided, and why.</p>
-      <div class="cards-grid">
-        <div class="decision-card">
-          <div class="card-eyebrow">The Architecture</div>
-          <h3>Microservices via Strangler Fig</h3>
-          <p>Four FastAPI services extracted from a Django monolith — Catalogue, Cart, Order, and Notification — with event-driven coordination via SNS/SQS.</p>
+      <dl class="what-docs-list">
+        <div class="what-docs-item">
+          <dt>
+            <span class="what-docs-label">The Architecture</span>
+            <span class="what-docs-sep">—</span>
+            <strong>Microservices via Strangler Fig</strong>
+          </dt>
+          <dd>Four FastAPI services extracted from a Django monolith — Catalogue, Cart, Order, and Notification — with event-driven coordination via SNS/SQS.</dd>
         </div>
-        <div class="decision-card">
-          <div class="card-eyebrow">The Infrastructure</div>
-          <h3>AWS ECS, CloudFormation, CodeBuild</h3>
-          <p>Every service deployed via Infrastructure as Code, with a consistent two-repo pattern and centralised CI/CD pipeline across all eight services.</p>
+        <div class="what-docs-item">
+          <dt>
+            <span class="what-docs-label">The Infrastructure</span>
+            <span class="what-docs-sep">—</span>
+            <strong>AWS ECS, CloudFormation, CodeBuild</strong>
+          </dt>
+          <dd>Every service deployed via Infrastructure as Code, with a consistent two-repo pattern and centralised CI/CD pipeline across all eight services.</dd>
         </div>
-        <div class="decision-card">
-          <div class="card-eyebrow">The Decisions</div>
-          <h3>Architectural Decision Records</h3>
-          <p>Each significant choice is captured as an ADR — what options were considered, what was decided, and what the consequences were.</p>
+        <div class="what-docs-item">
+          <dt>
+            <span class="what-docs-label">The Decisions</span>
+            <span class="what-docs-sep">—</span>
+            <strong>Architectural Decision Records</strong>
+          </dt>
+          <dd>Each significant choice is captured as an ADR — what options were considered, what was decided, and what the consequences were.</dd>
         </div>
-      </div>
+      </dl>
     </div>
   </section>
 

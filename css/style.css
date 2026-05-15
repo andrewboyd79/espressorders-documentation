@@ -373,6 +373,7 @@ a { color: inherit; text-decoration: none; }
 .tf-dot-2 { background: var(--color-stone); }
 .tf-dot-3 { background: var(--color-mid-dark); }
 .tf-dot-4 { background: var(--color-black); }
+.tf-dot-5 { background: var(--color-black); }
 .tf-title { font-weight: 500; }
 .tf-chapter { font-size: 12px; color: var(--color-stone); }
 .tf-read { margin-left: auto; font-size: 13px; color: var(--color-stone); }
@@ -494,6 +495,7 @@ a { color: inherit; text-decoration: none; }
 .mini-dot-3 { background: var(--color-mid-dark); }
 .mini-dot-4 { background: var(--color-black); }
 .mini-dot-infra { background: var(--color-near-black); border-radius: var(--radius-pill); }
+.mini-dot-5 { background: var(--color-black); }
 
 /* --- Two-column page layout --- */
 .page-layout {
@@ -760,6 +762,61 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid var(--color-light-gray);
 }
 
+/* --- Screenshots --- */
+.screenshot-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0 32px;
+}
+.screenshot-single {
+  margin: 24px 0 32px;
+}
+.screenshot-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.screenshot-figure img,
+.screenshot-single img {
+  width: 100%;
+  border: 1px solid var(--color-light-gray);
+  border-radius: var(--radius-container);
+  display: block;
+}
+.screenshot-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+}
+
+/* --- Rebuild list --- */
+.rebuild-list {
+  margin: 20px 0 32px;
+  border-top: 1px solid var(--color-light-gray);
+}
+.rebuild-item {
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-light-gray);
+  align-items: start;
+}
+.rebuild-item-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-black);
+  padding-top: 2px;
+}
+.rebuild-item-desc {
+  font-size: 13px;
+  color: var(--color-stone);
+  line-height: 1.5;
+}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -797,6 +854,8 @@ a { color: inherit; text-decoration: none; }
   .adr-grid { grid-template-columns: 1fr; }
   .timeline-track { gap: 8px; }
   .stage-dot { width: 36px; height: 36px; font-size: 12px; }
+  .screenshot-pair { grid-template-columns: 1fr; }
+  .rebuild-item { grid-template-columns: 1fr; gap: 4px; }
 }
 
 /* ============================================================

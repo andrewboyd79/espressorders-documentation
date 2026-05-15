@@ -31,6 +31,14 @@ window.SEARCH_INDEX = [
   { id: "trade-offs",        chapter: "chapter-9-mobile.html",             chapterTitle: "Chapter 4: Mobile",            section: "Key trade-offs",                      terms: ["Expo managed", "bare React Native", "simulator build", "App Store", "polling vs WebSocket", "10-second polling", "trade-offs"] },
   { id: "decision-record",   chapter: "chapter-9-mobile.html",             chapterTitle: "Chapter 4: Mobile",            section: "Decision record",                     terms: ["ADR", "Expo managed workflow", "ADR-004"] },
 
+  // Chapter 5 — Frontend Redesign
+  { id: "problem",           chapter: "chapter-frontend-redesign.html",    chapterTitle: "Chapter 5: Frontend Redesign", section: "The problem",                          terms: ["Bootstrap 5", "generic", "visual identity", "Code Institute", "frontend", "redesign"] },
+  { id: "seed-system",       chapter: "chapter-frontend-redesign.html",    chapterTitle: "Chapter 5: Frontend Redesign", section: "The SEED design system",               terms: ["SEED", "design system", "The Clean Extraction", "monochromatic", "bespoke", "product principles", "mobile-first"] },
+  { id: "aesthetic-pivot",   chapter: "chapter-frontend-redesign.html",    chapterTitle: "Chapter 5: Frontend Redesign", section: "The aesthetic pivot",                  terms: ["Da Vinci botanical", "wireframe render", "espresso machine", "aesthetic pivot", "artisan", "3D render"] },
+  { id: "what-was-rebuilt",  chapter: "chapter-frontend-redesign.html",    chapterTitle: "Chapter 5: Frontend Redesign", section: "What was rebuilt",                     terms: ["products page", "homepage", "auth pages", "allauth", "profile", "checkout", "AJAX drawer", "pill buttons", "CSS", "templates"] },
+  { id: "trade-offs",        chapter: "chapter-frontend-redesign.html",    chapterTitle: "Chapter 5: Frontend Redesign", section: "Key trade-offs",                       terms: ["Bootstrap vs bespoke", "botanical vs wireframe", "drawer vs detail page", "design decisions"] },
+  { id: "decision-record",   chapter: "chapter-frontend-redesign.html",    chapterTitle: "Chapter 5: Frontend Redesign", section: "Decision record",                      terms: ["ADR", "ADR-005", "ADR-006", "Replace Bootstrap", "wireframe aesthetic", "SEED design system"] },
+
   // Infrastructure
   { id: "platform-consistency",chapter: "infrastructure-automation.html", chapterTitle: "Infrastructure",              section: "Platform Consistency",              terms: ["platform engineering", "consistency", "force multiplier", "cognitive load", "delivery acceleration", "AI assistance"] },
   { id: "repo-pattern",        chapter: "infrastructure-automation.html", chapterTitle: "Infrastructure",              section: "The repo pattern",                    terms: ["two-repo pattern", "application code", "infrastructure code", "service-config", "CloudFormation", "ECS", "dev branch", "prod branch", "GitHub"] },

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 5: Frontend Redesign — Andrew Boyd</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <nav class="site-nav" aria-label="Site">
+    <div class="container">
+      <a href="../index.html" class="logo">EspressOrders</a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link active">Overview</a>
+        <a href="infrastructure-automation.html" class="nav-link">Infrastructure &amp; Automation</a>
+      </div>
+      <a href="https://github.com/andrewboyd79" class="btn-black btn-sm" target="_blank" rel="noopener">GitHub →</a>
+    </div>
+  </nav>
+
+  <!-- Chapter tab strip -->
+  <nav class="chapter-nav" aria-label="Chapters">
+    <a href="chapter-1-monolith.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-1">1</span> Monolith
+    </a>
+    <a href="chapter-2-4-decomposition.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-2">2</span> Decomposition
+    </a>
+    <a href="chapter-5-7-maturity.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-3">3</span> Maturity
+    </a>
+    <a href="chapter-9-mobile.html" class="chapter-tab">
+      <span class="mini-dot mini-dot-4">4</span> Mobile
+    </a>
+    <a href="chapter-frontend-redesign.html" class="chapter-tab active">
+      <span class="mini-dot mini-dot-5">5</span> Frontend
+    </a>
+    <a href="infrastructure-automation.html" class="chapter-tab chapter-tab-infra">
+      <span class="mini-dot mini-dot-infra">i</span> Infrastructure
+    </a>
+  </nav>
+
+  <div class="page-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-label">On this page</div>
+      <a href="#problem" class="sidebar-link">The problem</a>
+      <a href="#seed-system" class="sidebar-link">The SEED system</a>
+      <a href="#aesthetic-pivot" class="sidebar-link">The aesthetic pivot</a>
+      <a href="#what-was-rebuilt" class="sidebar-link">What was rebuilt</a>
+      <a href="#trade-offs" class="sidebar-link">Key trade-offs</a>
+      <a href="#decision-record" class="sidebar-link">Decision record</a>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content" id="main-content">
+
+      <div class="chapter-header">
+        <div class="eyebrow">Chapter 5 · Frontend</div>
+        <h1>Frontend Redesign</h1>
+        <p>After four chapters of infrastructure, decomposition, and mobile — the web frontend still looked like what it was: a Code Institute Bootstrap project. SEED was the answer. A bespoke design system built from scratch and applied to every template in the codebase. Not a refinement. A replacement.</p>
+      </div>
+
+      <h2 id="problem">The problem</h2>
+      <p>The original Django monolith frontend ran on Bootstrap 5 throughout all four preceding chapters. It was functional. The microservices behind it were architecturally interesting. The mobile app was polished. But anyone who visited the web client would see a generic Bootstrap site — the same framework defaults that shipped from every Code Institute Django project submitted that year.</p>
+      <p>The platform had been rebuilt from the inside out. The frontend hadn't changed. After the mobile chapter confirmed the API layer was solid, attention turned to the web client's visual identity. The question wasn't whether to redesign — it was whether to do it properly.</p>
+
+      <div class="screenshot-pair">
+        <div class="screenshot-figure">
+          <div class="screenshot-label">Before — Bootstrap 5</div>
+          <img src="images/before-home.png" alt="Original Bootstrap homepage with green banner, serif heading, and brown CTA buttons" loading="lazy">
+        </div>
+        <div class="screenshot-figure">
+          <div class="screenshot-label">After — SEED</div>
+          <img src="images/after-home.png" alt="Redesigned SEED homepage with dark hero, wireframe espresso machine render, and minimal typography" loading="lazy">
+        </div>
+      </div>
+
+      <h2 id="seed-system">The SEED design system</h2>
+      <p>SEED — "The Clean Extraction" — is a bespoke design system built from scratch for espressOrders. The name references both the product and the method: nothing added that shouldn't be there, nothing removed that must stay. It explicitly rejects artisan nostalgia, Bootstrap's generic component vocabulary, and anything that prioritises visual decoration over task speed.</p>
+
+      <div class="callout">
+        <p>The system is built on the same philosophy as a well-pulled espresso. Remove every variable that isn't contributing to the result. What remains is signal.</p>
+      </div>
+
+      <p>Five product principles govern every interface decision:</p>
+      <ol class="project-steps">
+        <li>One next action per screen — nothing competes for attention</li>
+        <li>Speed is respect — the user is in a hurry</li>
+        <li>Restrained warmth — reliable, satisfying, not loud</li>
+        <li>Confidence at every confirmation — the QR code moment must feel unambiguous</li>
+        <li>Brand speaks through product — the home page attracts, then gets out of the way</li>
+      </ol>
+
+      <p>The palette is near-monochromatic: warm near-black and off-white form almost every surface, with a single warm amber accent used at under 10% of any screen. One typeface family, differentiated by weight alone. No shadows — depth comes from tonal contrast. Mobile-first throughout, built for users who are in motion.</p>
+
+      <h2 id="aesthetic-pivot">The aesthetic pivot</h2>
+      <p>The redesign went through two distinct visual phases before reaching the shipped state.</p>
+
+      <div class="diagram">
+        <div class="diagram-row">
+          <div class="diagram-box">Phase 1<br>Da Vinci botanical</div>
+          <div class="diagram-arrow">→ Rejected</div>
+          <div class="diagram-box strong">Phase 2<br>Wireframe 3D renders</div>
+        </div>
+      </div>
+
+      <p>The first iteration built the products page around Da Vinci botanical illustration watermarks as category headers — warm amber for hot drinks, cool teal for cold, icy blue for iced. Visually interesting. But wrong. Botanical aesthetics read as artisan craft — hand-drawn warmth, heritage, imprecision. Exactly the anti-reference the brand brief identified.</p>
+      <p>A full visual pivot replaced every illustration slot with wireframe 3D renders: an espresso machine on the homepage hero and auth pages, machine component details as category watermarks, a ghost coffee cup on the order success page. The botanical aesthetic said "artisan café". The wireframe renders say "precision engineering". One of those matches the narrative running through every other chapter in this portfolio.</p>
+
+      <div class="screenshot-single">
+        <img src="images/after-home.png" alt="SEED homepage hero: dark background with wireframe espresso machine render and 'Your coffee. Ready.' headline" loading="lazy">
+      </div>
+
+      <h2 id="what-was-rebuilt">What was rebuilt</h2>
+      <p>Every template in the codebase. Nine groups, approximately 30 commits, around 2,000 lines of new CSS distributed across six per-app stylesheets. Bootstrap CDN dependencies removed from <code>base.html</code>.</p>
+
+      <div class="rebuild-list">
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">Products page</div>
+          <div class="rebuild-item-desc">Bootstrap card grid replaced with a full-width typographic menu list. Right-side drawer (bottom sheet on mobile) for product detail and add-to-bag via AJAX. Wireframe render watermarks per category section.</div>
+        </div>
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">Homepage</div>
+          <div class="rebuild-item-desc">Wireframe machine render as hero illustration. Seasonal specials with editorial card styling. New <code>home.css</code> built from scratch at 528 lines, replacing Bootstrap utilities entirely.</div>
+        </div>
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">Auth pages</div>
+          <div class="rebuild-item-desc">All allauth templates redesigned: login, signup, logout, password reset flows, email confirmation, verification sent. New base template aligned with SEED. Split layout with wireframe panel on auth screens.</div>
+        </div>
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">About page</div>
+          <div class="rebuild-item-desc">Built from scratch — was a stub before. Split story section, cart directory with editorial full-width rows, location illustrations blurred and faded as right-side panels. Standalone <code>about.css</code> at 258 lines.</div>
+        </div>
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">Profile page</div>
+          <div class="rebuild-item-desc">Complete rebuild from Bootstrap table layout. Two-column: details form sidebar and order history panel. READY orders get warm amber tint and inverted status badge. Pagination added at 10 orders per page.</div>
+        </div>
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">Bag page</div>
+          <div class="rebuild-item-desc">New <code>bag.css</code> from scratch at 222 lines. Template restructured to SEED visual language throughout.</div>
+        </div>
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">Checkout page</div>
+          <div class="rebuild-item-desc">New <code>checkout.css</code> at 692 lines. Native select hidden via CSS, replaced with pill buttons synced to a hidden input — the select still carries the POST value for form validation. Same pill pattern for modifier groups.</div>
+        </div>
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">Order success page</div>
+          <div class="rebuild-item-desc">Two-column editorial grid. Left: order confirmation and QR code. Right: wireframe coffee cup ghost image, absolutely positioned with <code>bottom:0</code> and <code>overflow:hidden</code> on the grid container.</div>
+        </div>
+        <div class="rebuild-item">
+          <div class="rebuild-item-name">Base templates</div>
+          <div class="rebuild-item-desc"><code>base.html</code> and <code>base_no_main_nav.html</code> updated. New logo assets. Bootstrap CDN links removed; SEED CSS files loaded per-app.</div>
+        </div>
+      </div>
+
+      <p>The key changes, illustrated:</p>
+
+      <div class="screenshot-pair">
+        <div class="screenshot-figure">
+          <div class="screenshot-label">Before — card grid</div>
+          <img src="images/before-products.png" alt="Bootstrap products page showing a four-column grid of product cards with cup photography" loading="lazy">
+        </div>
+        <div class="screenshot-figure">
+          <div class="screenshot-label">After — typographic list</div>
+          <img src="images/after-products.png" alt="SEED products page with full-width typographic menu list and wireframe category header watermark" loading="lazy">
+        </div>
+      </div>
+
+      <div class="screenshot-pair">
+        <div class="screenshot-figure">
+          <div class="screenshot-label">Before — separate detail page</div>
+          <img src="images/before-product-detail.png" alt="Bootstrap product detail page: full-page navigation away from the product list" loading="lazy">
+        </div>
+        <div class="screenshot-figure">
+          <div class="screenshot-label">After — right-side drawer</div>
+          <img src="images/after-products-drawer.png" alt="SEED products page with right-side drawer open, user remains on the menu" loading="lazy">
+        </div>
+      </div>
+
+      <div class="screenshot-pair">
+        <div class="screenshot-figure">
+          <div class="screenshot-label">Before — native select</div>
+          <img src="images/before-checkout.png" alt="Bootstrap checkout with plain text input for collection location" loading="lazy">
+        </div>
+        <div class="screenshot-figure">
+          <div class="screenshot-label">After — pill button selector</div>
+          <img src="images/after-checkout.png" alt="SEED checkout with pill buttons for Hospital Cart and Parks Cart location selection" loading="lazy">
+        </div>
+      </div>
+
+      <div class="screenshot-pair">
+        <div class="screenshot-figure">
+          <div class="screenshot-label">Before — centered form</div>
+          <img src="images/before-signin.png" alt="Bootstrap sign-in page with centered form, brown button, and dark social footer" loading="lazy">
+        </div>
+        <div class="screenshot-figure">
+          <div class="screenshot-label">After — split layout</div>
+          <img src="images/after-signin.png" alt="SEED sign-in with dark left panel showing wireframe machine render and right panel with clean form" loading="lazy">
+        </div>
+      </div>
+
+      <h2 id="trade-offs">Key trade-offs</h2>
+      <div class="cards-grid">
+        <div class="decision-card">
+          <div class="card-eyebrow">Design system</div>
+          <h3>Bespoke over Bootstrap</h3>
+          <p>Full control over visual tokens and no specificity fights. More CSS to maintain, but each file is small and scoped. The mobile app already had no Bootstrap dependency — the web client now shares the same visual language without a framework mediating it.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">Visual aesthetic</div>
+          <h3>Wireframe renders over botanical</h3>
+          <p>The Da Vinci botanical phase was visually interesting but read as artisan — directly against the brand brief anti-references. The wireframe render pivot aligned the web client's visual language with the engineering narrative running through every other chapter.</p>
+        </div>
+        <div class="decision-card">
+          <div class="card-eyebrow">Product detail</div>
+          <h3>Drawer over separate page</h3>
+          <p>The original monolith navigated to a separate product detail page on selection. The AJAX drawer keeps the user in the menu context throughout. Add-to-bag completes in the drawer and returns focus to the list — one less navigation step per item.</p>
+        </div>
+      </div>
+
+      <!-- ADR component -->
+      <div id="decision-record" class="adr">
+        <div class="adr-header">
+          <span class="adr-label">Architectural Decision Record · ADR-005</span>
+          <span class="adr-badge">Accepted</span>
+        </div>
+        <div class="adr-body">
+          <h3>Replace Bootstrap 5 with a bespoke design system</h3>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Context</div>
+              <p>Bootstrap 5 was the original framework from the Code Institute diploma project. After four chapters of backend and infrastructure work, the web frontend still read as a generic Bootstrap site — visually inconsistent with the platform's engineering ambition and brand direction.</p>
+            </div>
+            <div class="adr-section">
+              <div class="adr-section-label">Decision</div>
+              <ul class="adr-steps">
+                <li>Build a bespoke design system (SEED) from scratch. No Bootstrap dependency.</li>
+                <li>Each app gets its own scoped CSS file. No shared utility framework.</li>
+                <li>Bootstrap CDN links removed from <code>base.html</code>.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Consequences</div>
+              <p>Full control over visual tokens with no specificity conflicts. More CSS to maintain, but each file is small and purposeful. The mobile app (React Native) already had no Bootstrap dependency — the web client now shares the same visual language without a framework mediating it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="adr">
+        <div class="adr-header">
+          <span class="adr-label">Architectural Decision Record · ADR-006</span>
+          <span class="adr-badge">Accepted</span>
+        </div>
+        <div class="adr-body">
+          <h3>Wireframe 3D render aesthetic over Da Vinci botanical</h3>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Context</div>
+              <p>The first iteration of the redesigned products page used Da Vinci botanical illustrations as category watermarks, with subtle colour temperature shifts per section. These were visually distinctive but read as artisan and nostalgic — directly against the brand brief anti-references.</p>
+            </div>
+            <div class="adr-section">
+              <div class="adr-section-label">Decision</div>
+              <ul class="adr-steps">
+                <li>Full visual pivot to wireframe 3D machine and cup renders across all illustration slots.</li>
+                <li>Applied to homepage hero, auth page panels, category watermarks, and order success page.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="adr-grid">
+            <div class="adr-section">
+              <div class="adr-section-label">Consequences</div>
+              <p>Cohesive aesthetic across all pages — technically precise rather than artisan craft. Aligns with the engineering narrative of the platform. Required generating new image assets for every illustration slot; botanical assets were discarded.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <aside class="marginalia">
+      <div class="marginalia-sticky">
+        <div class="marginalia-section">
+          <div class="marginalia-label">Design system</div>
+          <div class="marginalia-value">SEED — "The Clean Extraction"</div>
+        </div>
+        <div class="marginalia-section">
+          <div class="marginalia-label">Aesthetic</div>
+          <div class="marginalia-value">Wireframe 3D renders — pivoted from Da Vinci botanical</div>
+        </div>
+        <div class="marginalia-section">
+          <div class="marginalia-label">Scope</div>
+          <div class="marginalia-value">All 9 template groups rewritten; Bootstrap removed</div>
+        </div>
+        <div class="marginalia-section">
+          <div class="marginalia-label">New CSS</div>
+          <div class="marginalia-value">~2,000 lines across 6 per-app stylesheets</div>
+        </div>
+        <div class="marginalia-section">
+          <div class="marginalia-label">Decision records</div>
+          <div class="marginalia-value">ADR-005: Replace Bootstrap with SEED<br>ADR-006: Wireframe render aesthetic</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Bottom chapter navigation -->
+  <div class="chapter-nav-bottom">
+    <a href="chapter-9-mobile.html" class="btn-ghost">← Chapter 4: Mobile</a>
+    <a href="infrastructure-automation.html" class="btn-black">Infrastructure &amp; Automation →</a>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Andrew Boyd · <a href="https://github.com/andrewboyd79">github.com/andrewboyd79</a></p>
+    </div>
+  </footer>
+
+  <script src="../js/search-index.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/sidebar.js"></script>
+</body>
+</html>

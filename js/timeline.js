@@ -42,6 +42,17 @@ const STAGES = [
     summary: 'A React Native / Expo mobile client built with zero backend changes required. Every API design decision made in earlier chapters paid off — the mobile app consumed existing endpoints without modification.',
     docLink: 'docs/chapter-9-mobile.html',
     adrLink: 'docs/chapter-9-mobile.html#decision-record'
+  },
+  {
+    id: 'frontend',
+    number: '5',
+    label: 'Frontend',
+    chapter: 'Chapter 5',
+    tech: ['SEED Design System', 'Django Templates', 'CSS', 'AJAX'],
+    tagline: '"Not a refinement. A replacement."',
+    summary: 'A complete replacement of Bootstrap 5 with SEED — a bespoke design system built around "The Clean Extraction" philosophy. Every template rewritten. Around 2,000 lines of new CSS across six per-app stylesheets. A visual identity built from scratch.',
+    docLink: 'docs/chapter-frontend-redesign.html',
+    adrLink: 'docs/chapter-frontend-redesign.html#decision-record'
   }
 ];
 

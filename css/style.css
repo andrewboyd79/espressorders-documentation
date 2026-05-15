@@ -318,6 +318,7 @@ a { color: inherit; text-decoration: none; }
 .dot-2 { background: var(--color-stone); }
 .dot-3 { background: var(--color-mid-dark); }
 .dot-4 { background: var(--color-black); }
+.dot-5 { background: var(--color-black); }
 .stage-node.active .stage-dot {
   outline: 3px solid var(--color-black);
   outline-offset: 3px;
